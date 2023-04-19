@@ -9,6 +9,24 @@
 #include <stdio.h>
 #include <mlx.h>
 
+typedef struct s_point
+{
+	int	x;
+	int	y;
+	int	z;
+}	t_point;
+
+typedef struct s_head
+{
+	t_point	*point;
+}	t_head;
+
+typedef struct s_data
+{
+	void	*mlx_ptr;
+	void	*win_ptr;
+}	t_data;
+
 typedef struct s_data {
 	void	*img;
 	char	*addr;
