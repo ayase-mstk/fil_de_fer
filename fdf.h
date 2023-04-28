@@ -1,13 +1,16 @@
 #ifndef FDF_H
 # define FDF_H
 
-#include <fcntl.h>
 #include <unistd.h>
 #include <errno.h>
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <mlx.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include "./minilibx_mms_20191025_beta/mlx.h"
+#include </usr/X11/include/X11/keysymdef.h>
 
 typedef struct s_point
 {
@@ -27,12 +30,12 @@ typedef struct s_data
 	void	*win_ptr;
 }	t_data;
 
-typedef struct s_data {
+typedef struct s_image {
 	void	*img;
 	char	*addr;
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
-}				t_data;
+}				t_image;
 
 #endif
