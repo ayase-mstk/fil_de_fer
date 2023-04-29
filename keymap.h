@@ -9,7 +9,7 @@
 #  define KEY_ESCAPE			0xff1b
 #  define KEY_DELETE			0xffff  /* Delete, rubout */
 #  define KEY_SHIFT_L		0xffe1  /* Left shift */
-#  define KEY _SHIFT_R		0xffe2  /* Right shift */
+#  define KEY_SHIFT_R		0xffe2  /* Right shift */
 #  define KEY_CONTROL_L		0xffe3  /* Left control */
 #  define KEY_CONTROL_R		0xffe4  /* Right control */
 #  define KEY_CAPS_LOCK		0xffe5  /* Caps lock */
@@ -148,5 +148,5 @@
 #  define KEY_X				0x0007
 #  define KEY_Y				0x0010
 #  define KEY_Z				0x0006
-#  endif
 # endif
+#endif
