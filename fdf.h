@@ -1,26 +1,29 @@
 #ifndef FDF_H
 # define FDF_H
 
-#include <unistd.h>
-#include <errno.h>
-#include <math.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
+# include <unistd.h>
+# include <errno.h>
+# include <math.h>
+# include <stdlib.h>
+# include <stdio.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <fcntl.h>
 # include <stddef.h>
+# include "libft/libft.h"
+# include "libftprintf/ft_printf.h"
+# include "gnl/get_next_line.h"
 // #include "./minilibx_mms_20191025_beta/mlx.h"
 // #include "X11/keysym.h"
 
 typedef struct s_mappoint
 {
-	double				x;
-	double				y;
-	double				z;
-	double				vx;
-	double				vy;
-	double				vz;
+	int					x;
+	int					y;
+	int					z;
+	int					vx;
+	int					vy;
+	int					vz;
 	uint32_t			color;
 	struct s_mappoint	*next;
 }	t_mappoint;
