@@ -10,27 +10,32 @@
 # include <sys/stat.h>
 # include <fcntl.h>
 # include <stddef.h>
+# include <stdbool.h>
 # include "libft/libft.h"
 # include "libftprintf/ft_printf.h"
 # include "gnl/get_next_line.h"
 // #include "./minilibx_mms_20191025_beta/mlx.h"
 // #include "X11/keysym.h"
 
+# ifndef M_PI
+#  define M_PI 3.14159265358979323846
+
+# endif
+
 typedef struct s_mappoint
 {
-	int					x;
-	int					y;
-	int					z;
-	int					vx;
-	int					vy;
-	int					vz;
+	double				x;
+	double				y;
+	double				z;
+	double				vx;
+	double				vy;
+	double				vz;
 	uint32_t			color;
-	struct s_mappoint	*next;
 }	t_mappoint;
 
 typedef struct s_map
 {
-	t_mappoint	*head;
+	t_mappoint	**array;
 	int			row;
 	int			col;
 }	t_map;
@@ -53,7 +58,11 @@ void		lst_free(t_map *map);
 t_map		*lst_init(void);
 t_mappoint	*lst_last(t_map *map);
 void		lst_print(t_map *map);
-void		lst_pushback(t_map *map, int x, int y, int z);
+void		lst_pushback(t_map *map, double x, double y, double z);
 size_t		lst_size(t_map *map);
+
+double	ft_atof(const char *nptr);
+void	ft_transform(t_map *map);
+void	ft_mlx(t_map *map);
 
 #endif

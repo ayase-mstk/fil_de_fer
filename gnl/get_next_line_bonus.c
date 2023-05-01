@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mahayase <mahayase@student.42tokyo.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*put_in_save(char *buf, char *save, ssize_t size)
 {
@@ -97,38 +97,19 @@ char	*save_after_newline(char *save, char *line)
 
 char	*get_next_line(int fd)
 {
-	static char	*save;
+	static char	*save[257];
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+	if (fd < 0 || fd >= 256 || BUFFER_SIZE <= 0 || read(fd, NULL, 0) < 0)
 		return (NULL);
-	save = read_until_newline(fd, save);
-	if (save == NULL)
+	save[fd] = read_until_newline(fd, save[fd]);
+	if (save[fd] == NULL)
 		return (NULL);
-	line = put_in_line(save);
+	line = put_in_line(save[fd]);
 	if (line == NULL)
 		return (NULL);
-	save = save_after_newline(save, line);
-	if (save == NULL)
+	save[fd] = save_after_newline(save[fd], line);
+	if (save[fd] == NULL)
 		return (NULL);
 	return (line);
 }
-
-// #include <stdio.h>
-// int	main(void)
-// {
-// 	int		fd;
-// 	char	*line;
-
-// 	fd = open("input.txt", O_RDONLY);
-// 	// fd = 0;
-// 	while (1)
-// 	{
-// 		line = get_next_line(fd);
-// 		if (line == NULL)
-// 			break ;
-// 		printf("%s", line);
-// 		free(line);
-// 	}
-// 	return (0);
-// }

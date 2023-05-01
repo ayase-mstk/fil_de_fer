@@ -1,32 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mahayase <mahayase@student.42tokyo.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/23 14:48:32 by mahayase          #+#    #+#             */
-/*   Updated: 2023/02/23 14:48:32 by mahayase         ###   ########.fr       */
+/*   Created: 2023/02/01 14:12:51 by mahayase          #+#    #+#             */
+/*   Updated: 2023/02/01 14:12:53 by mahayase         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
-
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1
-
-# endif
+#ifndef FT_PRINTF_H
+# define FT_PRINTF_H
 
 # include <stdlib.h>
-# include <fcntl.h>
+# include <string.h>
 # include <unistd.h>
+# include <stdarg.h>
+# include <limits.h>
 
-size_t	ft_strlen(const char *s);
-ssize_t	ft_strcheck(const char *s, char c);
-char	*ft_strdup(char *src);
-char	*ft_strnjoin(char const *s1, char const *s2, size_t len2);
-char	*ft_free(char **str);
-char	*get_next_line(int fd);
+int		ft_printf(const char *s, ...);
+ssize_t	print_char(int c);
+ssize_t	print_decimal(int n);
+ssize_t	print_lowerhex(unsigned int n);
+ssize_t	print_pointer(uintptr_t n);
+ssize_t	print_string(char *str);
+ssize_t	print_unsignedint(unsigned int n);
+ssize_t	print_upperhex(unsigned int n);
+ssize_t	print_other(int c);
 
 #endif

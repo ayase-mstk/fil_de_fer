@@ -22,7 +22,7 @@ void	store_map(t_map *map, char **strarr, int row)
 	col = 0;
 	while (strarr[col])
 	{
-		lst_pushback(map, row, col, ft_atoi(strarr[col]));
+		lst_pushback(map, row, col, ft_atof(strarr[col]));
 		col++;
 	}
 	if (map->col == 0)
@@ -62,6 +62,7 @@ int	main(int ac, char **av)
 		exit(0);
 	map = lst_init();
 	read_map(map, av[1]);
-	lst_print(map);
+	// lst_print(map);
+	ft_mlx(map);
 	return (0);
 }

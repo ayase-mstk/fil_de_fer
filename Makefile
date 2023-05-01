@@ -1,15 +1,18 @@
 NAME = fdf
 
-SRCS = main.c \
+SRCS = main2.c \
+		transform.c \
+		mlx.c \
 		error.c \
-		list/lst_free.c \
-		list/lst_init.c \
-		list/lst_last.c \
-		list/lst_print.c \
-		list/lst_pushback.c \
-		list/lst_size.c \
+		ft_atof.c \
 		gnl/get_next_line.c \
 		gnl/get_next_line_utils.c \
+		list/lst_print.c \
+		# list/lst_free.c \
+		# list/lst_init.c \
+		# list/lst_last.c \
+		# list/lst_pushback.c \
+		# list/lst_size.c \
 
 OBJS = $(SRCS:%.c=%.o)
 
@@ -20,7 +23,7 @@ LIBS       = -L$(LIBFT_DIR) -lft -L$(PRINTF_DIR) -lftprintf
 
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address # delete sanitizer
 RM = rm -f
 
 all:	$(NAME)
