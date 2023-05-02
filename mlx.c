@@ -24,27 +24,38 @@ int	close_esc(int keycode, t_data *data)
 
 int	put_line1(t_map *map, t_img *img, int i, int j)
 {
-	int	tmp_x;
-	int	tmp_y;
+	int		tmp_x;
+	int		tmp_y;
+	double	slope_right;
+	double	slope_down;
 
 	tmp_x = map->array[i][j].x;
 	tmp_y = map->array[i][j].y;
+	slope_right = (map->array[i][j + 1].x - map->array[i][j].x) / \
+					(map->array[i][j + 1].y - map->array[i][j].y);
+	slope_down = (map->array[i + 1][j].x - map->array[i][j].x) / \
+					(map->array[i + 1][j].y - map->array[i][j].y);
 	while (tmp_x < map->array[i][j + 1].x * 10)
 	{
-		while (tmp_y < map->array[i + 1][j].y * 10)
-		{
-			my_mlx_pixel_put(img, tmp_x, tmp_y, 0x00FFFF);
-			tmp_y++;
-		}
+		my_mlx_pixel_put(img, 250 + tmp_x, 250 + tmp_y, 0x0000FFFF);
 		tmp_x++;
+		tmp_y += slope_right;
+	}
+	tmp_x = map->array[i][j].x;
+	tmp_y = map->array[i][j].y;
+	while (tmp_y < map->array[i + 1][j].y * 10)
+	{
+		my_mlx_pixel_put(img, tmp_x, tmp_y, 0x0000FFFF);
+		tmp_x++;
+		tmp_y += slope_down;
 	}
 	return (0);
 }
 
 int	ft_bresenham(t_map *map, t_img *img)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 
 	i = 0;
 	while (i < map->row - 1)
@@ -52,15 +63,7 @@ int	ft_bresenham(t_map *map, t_img *img)
 		j = 0;
 		while (j < map->col - 1)
 		{
-			int	slope_right = (map->array[i][j + 1].x - map->array[i][j].x) /\
-						(map->array[i][j + 1].y - map->array[i][j].y);
-			if (slope_right < 1)
-				put_line1(map, img, i, j);
-			int	slope_down = (map->array[i + 1][j].x - map->array[i][j].x) /\
-						(map->array[i + 1][j].y - map->array[i][j].y);
-			if (slope_down < 1)
-				put_line1(map, img, i , j);
-			
+			put_line1(map, img, i, j);
 			j++;
 		}
 		i++;
@@ -77,11 +80,11 @@ void	ft_mlx(t_map *map)
 	data.win_ptr = mlx_new_window(data.mlx_ptr, 1000, 1000, "mlx 42");
 	mlx_clear_window(data.mlx_ptr, data.win_ptr);
 	img.img = mlx_new_image(data.mlx_ptr, 1000, 1000);
+	// //メモリに保存されている画像の先頭アドレスを指すポインタを返す。このポインタから画像を修正することができる。
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, \
-								&img.line_length, &img.endian); //メモリに保存されている画像の先頭アドレスを指すポインタを返す。このポインタから画像を修正することができる。
+								&img.line_length, &img.endian);
 	ft_bresenham(map, &img);
 	mlx_put_image_to_window(data.mlx_ptr, data.win_ptr, img.img, 0, 0);
-
 	mlx_key_hook(data.win_ptr, close_esc, &data);
 	// mlx_mouse_hook(data.win_ptr, deal_mouse, &data);
 	// mlx_mouse_move(data.win_ptr, 250, 250);
