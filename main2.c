@@ -94,8 +94,8 @@ int	main(int ac, char **av)
 	if (map == NULL)
 		exit(1);
 	read_map(map, av[1]);
-	// lst_print(map);
-	// ft_transform(map);
+	ft_rotation_z(map);
+	lst_print(map);
 	ft_mlx(map);
 	return (0);
 }

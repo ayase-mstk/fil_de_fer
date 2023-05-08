@@ -1,6 +1,6 @@
 #include "fdf.h"
 
-void	ft_rotation_z(t_map *map, double theeta)
+void	ft_rotation_z(t_map *map)
 {
 	int		i;
 	int		j;
@@ -8,20 +8,20 @@ void	ft_rotation_z(t_map *map, double theeta)
 	double	rotation_z[3][3];
 
 	i = 0;
-	rotation_z[0][0] = cos(theeta * M_PI / 180.0);
-	rotation_z[0][1] = -sin(theeta * M_PI / 180.0);
+	rotation_z[0][0] = cos(M_PI / 4.0);
+	rotation_z[0][1] = -sin(M_PI / 4.0);
 	rotation_z[0][2] = 0;
-	rotation_z[1][0] = sin(theeta * M_PI / 180.0);
-	rotation_z[1][1] = cos(theeta * M_PI / 180.0);
+	rotation_z[1][0] = sin(M_PI / 4.0);
+	rotation_z[1][1] = cos(M_PI / 4.0);
 	rotation_z[1][2] = 0;
 	rotation_z[2][0] = 0;
 	rotation_z[2][1] = 0;
 	rotation_z[2][2] = 1;
-	while (i < map->row)
+	while (i < map->row - 1)
 	{
 		j = 0;
 		sum = 0.0;
-		while (j < map->col)
+		while (j < map->col - 1)
 		{
 			sum += map->array[i][j].x * rotation_z[i][j];
 			sum += map->array[i][j].y * rotation_z[i][j];

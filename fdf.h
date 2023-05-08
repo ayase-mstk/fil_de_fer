@@ -22,6 +22,20 @@
 
 # endif
 
+typedef struct s_data
+{
+	void	*mlx_ptr;
+	void	*win_ptr;
+}	t_data;
+
+typedef struct s_img {
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}				t_img;
+
 typedef struct s_mappoint
 {
 	double				x;
@@ -40,20 +54,6 @@ typedef struct s_map
 	int			col;
 }	t_map;
 
-typedef struct s_data
-{
-	void	*mlx_ptr;
-	void	*win_ptr;
-}	t_data;
-
-typedef struct s_img {
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-}				t_img;
-
 void		lst_free(t_map *map);
 t_map		*lst_init(void);
 t_mappoint	*lst_last(t_map *map);
@@ -62,7 +62,7 @@ void		lst_pushback(t_map *map, double x, double y, double z);
 size_t		lst_size(t_map *map);
 
 double	ft_atof(const char *nptr);
-void	ft_rotation_z(t_map *map, double theeta);
+void	ft_rotation_z(t_map *map);
 void	ft_mlx(t_map *map);
 int		main(int ac, char **av);
 
