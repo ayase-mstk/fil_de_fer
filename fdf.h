@@ -50,6 +50,7 @@ typedef struct s_mappoint
 typedef struct s_map
 {
 	t_mappoint	**array;
+	t_mappoint	**rotate_array;
 	int			row;
 	int			col;
 }	t_map;
@@ -61,9 +62,11 @@ void		lst_print(t_map *map);
 void		lst_pushback(t_map *map, double x, double y, double z);
 size_t		lst_size(t_map *map);
 
-double	ft_atof(const char *nptr);
-void	ft_rotation_z(t_map *map);
-void	ft_mlx(t_map *map);
-int		main(int ac, char **av);
+double		ft_atof(const char *nptr);
+void		ft_rotation_x(t_map *map);
+void		ft_rotation_y(t_map *map);
+void		ft_rotation_z(t_map *map);
+void		ft_mlx(t_map *map);
+int			main(int ac, char **av);
 
 #endif

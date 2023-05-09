@@ -86,7 +86,7 @@ void draw_right(t_map *map, t_img *img, int i, int j)
 	err = dx - dy;
 	while (map->array[i][j].vx != map->array[i][j + 1].x || map->array[i][j].vy != map->array[i][j + 1].y)
     {
-		my_mlx_pixel_put(img, 300 + map->array[i][j].vx, 300 + map->array[i][j].vy, 0x00FFFF);
+		my_mlx_pixel_put(img, 500 + map->array[i][j].vx, 500 + map->array[i][j].vy, 0x00FFFF);
         if (err * 2 > -dy)
         {
             err -= dy;
@@ -115,7 +115,7 @@ void draw_down(t_map *map, t_img *img, int i, int j)
 	err = dx - dy;
 	while (map->array[i][j].vx != map->array[i + 1][j].x || map->array[i][j].vy != map->array[i + 1][j].y)
     {
-		my_mlx_pixel_put(img, 300 + map->array[i][j].vx, 300 + map->array[i][j].vy, 0x00FFFF);
+		my_mlx_pixel_put(img, 500 + map->array[i][j].vx, 500 + map->array[i][j].vy, 0x00FFFF);
         if (err * 2 > -dy)
         {
             err -= dy;
@@ -165,6 +165,8 @@ void	ft_mlx(t_map *map)
 	img.img = mlx_new_image(data.mlx_ptr, HEIGHT, WIDTH);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, \
 								&img.line_length, &img.endian); //メモリに保存されている画像の先頭アドレスを指すポインタを返す。このポインタから画像を修正することができる。
+	printf("bits_per_pixel = %d\n", img.bits_per_pixel);
+	printf("line_length = %d\n", img.line_length);
 	// ft_bresenham(map, &img);
 	draw_line(map, &img);
 	mlx_put_image_to_window(data.mlx_ptr, data.win_ptr, img.img, 0, 0);

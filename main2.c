@@ -23,13 +23,14 @@ void	store_map(t_map *map, char **strarr, int row)
 	size = 0;
 	while (strarr[size])
 		size++;
-	map->array[row] = (t_mappoint *)malloc(sizeof(t_mappoint) * (size + 1));
+	map->rotate_array[row] = (t_mappoint *)malloc(sizeof(t_mappoint) * (size + 1));
+	map->rotate_array[row] = (t_mappoint *)malloc(sizeof(t_mappoint) * (size + 1));
 	col = 0;
 	while (strarr[col])
 	{
-		map->array[row][col].x = row;
-		map->array[row][col].y = col;
-		map->array[row][col].z = ft_atof(strarr[col]);
+		map->rotate_array[row][col].x = 40.0 * row;
+		map->rotate_array[row][col].y = 40.0 * col;
+		map->rotate_array[row][col].z = 40.0 * ft_atof(strarr[col]);
 		col++;
 	}
 	if (map->col == 0)
@@ -48,10 +49,11 @@ void	split_map(t_map *map, char *lines[])
 	row = 0;
 	while (lines[row])
 		row++;
-	map->array = (t_mappoint **)malloc(sizeof(t_mappoint *) * (row + 1));
-	if (map->array == NULL)
+	map->rotate_array = (t_mappoint **)malloc(sizeof(t_mappoint *) * (row + 1));
+	map->rotate_array = (t_mappoint **)malloc(sizeof(t_mappoint *) * (row + 1));
+	if (map->rotate_array == NULL)
 		exit(1);
-	map->array[row] = NULL;
+	map->rotate_array[row] = NULL;
 	map->row = row;
 	while (i < row)
 	{
@@ -96,6 +98,6 @@ int	main(int ac, char **av)
 	read_map(map, av[1]);
 	ft_rotation_z(map);
 	lst_print(map);
-	ft_mlx(map);
+	// ft_mlx(map);
 	return (0);
 }
