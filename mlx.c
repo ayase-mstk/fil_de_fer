@@ -6,10 +6,17 @@
 #define WIDTH 1080
 #define HEIGHT 1920
 
-void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
+void	my_mlx_pixel_put(t_img *img, int x, int y, double z)
 {
 	char	*dst;
+	int		color;
 
+	if (z < 0)
+		color = 0xFF0000;
+	else if (z == 0)
+		color = 0x00FFFF;
+	else
+		color = 0xFFFFFF;
 	dst = img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8));
 	// バイトがアラインメントされていない、つまりline_lengthが実際のウィンドウ幅と異なっているので、
 	//メモリオフセット(dst)は必ずmlx_get_data_addrで設定された行長を使用して計算する必要がある。
@@ -84,9 +91,10 @@ void draw_right(t_map *map, t_img *img, int i, int j)
 	sx = map->array[i][j].x < map->array[i][j + 1].x ? 1 : -1;
 	sy = map->array[i][j].y < map->array[i][j + 1].y ? 1 : -1;
 	err = dx - dy;
-	while (map->array[i][j].vx != map->array[i][j + 1].x || map->array[i][j].vy != map->array[i][j + 1].y)
+	while ((fabs(map->array[i][j + 1].x - map->array[i][j].vx) > 1.1) && \
+			(fabs(map->array[i][j + 1].y - map->array[i][j].vy) > 1.1))
     {
-		my_mlx_pixel_put(img, 500 + map->array[i][j].vx, 500 + map->array[i][j].vy, 0x00FFFF);
+		my_mlx_pixel_put(img, 300 + map->array[i][j].vx, 300 + map->array[i][j].vy, map->array[i][j].z);
         if (err * 2 > -dy)
         {
             err -= dy;
@@ -113,9 +121,10 @@ void draw_down(t_map *map, t_img *img, int i, int j)
 	sx = map->array[i][j].x < map->array[i + 1][j].x ? 1 : -1;
 	sy = map->array[i][j].y < map->array[i + 1][j].y ? 1 : -1;
 	err = dx - dy;
-	while (map->array[i][j].vx != map->array[i + 1][j].x || map->array[i][j].vy != map->array[i + 1][j].y)
+	while ((fabs(map->array[i + 1][j].x - map->array[i][j].vx) > 1.1 && \
+			fabs(map->array[i + 1][j].y - map->array[i][j].vy) > 1.1))
     {
-		my_mlx_pixel_put(img, 500 + map->array[i][j].vx, 500 + map->array[i][j].vy, 0x00FFFF);
+		my_mlx_pixel_put(img,300 + map->array[i][j].vx, 300 + map->array[i][j].vy, 0x00FFFF);
         if (err * 2 > -dy)
         {
             err -= dy;
@@ -134,11 +143,11 @@ void	draw_line(t_map *map, t_img *img)
 	int	i;
 	int	j;
 
-	i = 0;
-	while (i < map->row)
+	j = 0;
+	while (j < map->row)
 	{
-		j = 0;
-		while (j < map->col)
+		i = 0;
+		while (i < map->col)
 		{
 			map->array[i][j].vx = map->array[i][j].x;
 			map->array[i][j].vy = map->array[i][j].y;
@@ -148,9 +157,9 @@ void	draw_line(t_map *map, t_img *img)
 			map->array[i][j].vy = map->array[i][j].y;
 			if (i != map->row - 1)
 				draw_down(map, img, i, j);
-			j++;
+			i++;
 		}
-		i++;
+		j++;
 	}
 }
 
@@ -161,7 +170,7 @@ void	ft_mlx(t_map *map)
 
 	data.mlx_ptr = mlx_init();
 	data.win_ptr = mlx_new_window(data.mlx_ptr, HEIGHT, WIDTH, "mlx 42");
-	// mlx_clear_window(data.mlx_ptr, data.win_ptr);
+	mlx_clear_window(data.mlx_ptr, data.win_ptr);
 	img.img = mlx_new_image(data.mlx_ptr, HEIGHT, WIDTH);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, \
 								&img.line_length, &img.endian); //メモリに保存されている画像の先頭アドレスを指すポインタを返す。このポインタから画像を修正することができる。
