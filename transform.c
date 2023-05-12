@@ -1,5 +1,51 @@
 #include "fdf.h"
 
+void	ft_isometric1(t_map *map)
+{
+	int		i;
+	int		j;
+	double	tmp_y;
+	double	tmp_z;
+
+	i = 0;
+	while (i < map->row)
+	{
+		j = 0;
+		while (j < map->col)
+		{
+			tmp_y = map->array[i][j].y;
+			tmp_z = map->array[i][j].z;
+			map->array[i][j].y = tmp_y * cos(0.523599) - tmp_z * sin(0.523599);
+			map->array[i][j].z = tmp_y * sin(0.523599) + tmp_z * cos(0.523599); 
+			j++;
+		}
+		i++;
+	}
+}
+
+void	ft_isometric2(t_map	*map)
+{
+	int		i;
+	int		j;
+	double	tmp_x;
+	double	tmp_y;
+
+	i = 0;
+	while (i < map->row)
+	{
+		j = 0;
+		while (j < map->col)
+		{
+			tmp_x = map->array[i][j].x;
+			tmp_y = map->array[i][j].z;
+			map->array[i][j].x = tmp_x * cos(0.523599) + tmp_y * sin(0.523599);
+			map->array[i][j].y = -tmp_x * sin(0.523599) + tmp_y * cos(0.523599);
+			j++;
+		}
+		i++;
+	}
+}
+
 void	ft_isometric_projection(t_map *map)
 {
 	int		i;
@@ -7,20 +53,20 @@ void	ft_isometric_projection(t_map *map)
 	double	tmp_x;
 	double	tmp_y;
 
-	j = 0;
-	while (j < map->row)
+	i = 0;
+	while (i < map->col)
 	{
-		i = 0;
-		while (i < map->col)
+		j = 0;
+		while (j < map->row)
 		{
-			tmp_x = map->array[i][j].x;
-			tmp_y = map->array[i][j].y;
-			map->array[i][j].x = (tmp_x - tmp_y) * cos(0.523599);
-			map->array[i][j].y = -map->array[i][j].z + (tmp_x + tmp_y) \
+			tmp_x = map->array[j][i].x;
+			tmp_y = map->array[j][i].y;
+			map->array[j][i].x = (tmp_x - tmp_y) * cos(0.523599);
+			map->array[j][i].y = map->array[j][i].z + (tmp_x + tmp_y) \
 									* sin(0.523599);
-			i++;
+			j++;
 		}
-		j++;
+		i++;
 	}
 }
 
