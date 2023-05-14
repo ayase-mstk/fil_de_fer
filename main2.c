@@ -29,9 +29,9 @@ void	store_map(t_map *map, char **strarr, int row)
 	col = 0;
 	while (strarr[col])
 	{
-		map->array[row][col].x = 40.0 * row;
-		map->array[row][col].y = 40.0 * col;
-		map->array[row][col].z = 40 * ft_atof(strarr[col]);
+		map->array[row][col].x = 40.0 * (double)row;
+		map->array[row][col].y = 40.0 * (double)col;
+		map->array[row][col].z = 10.0 * ft_atof(strarr[col]);
 		col++;
 	}
 	if (map->col == 0)
@@ -83,6 +83,8 @@ void	read_map(t_map *map, char *map_name)
 	close(fd);
 	map->col = 0;
 	map->row = 0;
+	map->xy.x = 0;
+	map->xy.y = 0;
 	split_map(map, lines);
 }
 
@@ -96,6 +98,10 @@ int	main(int ac, char **av)
 	if (map == NULL)
 		exit(1);
 	read_map(map, av[1]);
+	// lst_print(map);
+	// printf("\n");
+	// ft_isometric1(map);
+	// ft_isometric2(map);
 	ft_isometric_projection(map);
 	// ft_rotation_z(map, 5.0);
 	// ft_rotation_x(map, 36.0);

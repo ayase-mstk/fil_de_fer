@@ -36,6 +36,12 @@ typedef struct s_img {
 	int		endian;
 }				t_img;
 
+typedef struct s_xy
+{
+	double	x;
+	double	y;
+}	t_xy;
+
 typedef struct s_mappoint
 {
 	double				x;
@@ -52,6 +58,7 @@ typedef struct s_map
 	t_mappoint	**array;
 	int			row;
 	int			col;
+	t_xy		xy;
 }	t_map;
 
 void		lst_free(t_map *map);
@@ -62,10 +69,14 @@ void		lst_pushback(t_map *map, double x, double y, double z);
 size_t		lst_size(t_map *map);
 
 double		ft_atof(const char *nptr);
+double		ft_max(double a, double b);
+double		ft_min(double a, double b);
 void		ft_rotation_x(t_map *map, double theeta);
 void		ft_rotation_y(t_map *map, double theeta);
 void		ft_rotation_z(t_map *map, double theeta);
 void		ft_isometric_projection(t_map *map);
+void		ft_isometric1(t_map *map);
+void		ft_isometric2(t_map *map);
 void		ft_mlx(t_map *map);
 int			main(int ac, char **av);
 

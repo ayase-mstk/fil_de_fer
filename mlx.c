@@ -1,22 +1,22 @@
-// #include <X11/keysymd.h>
+#include <X11/keysym.h>
 #include "mlx.h"
 #include "fdf.h"
-#include "keymap.h"
+// #include "keymap.h"
 
-#define WIDTH 1080
-#define HEIGHT 1920
+#define HEIGHT 1080
+#define WIDTH 1920
 
 void	my_mlx_pixel_put(t_img *img, int x, int y, double z)
 {
 	char	*dst;
 	int		color;
 
-	if (z < 0)
-		color = 0xFF0000;
-	else if (z == 0)
-		color = 0x00FFFF;
-	else
+	if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT)
+		return ;
+	if (z <= 0)
 		color = 0xFFFFFF;
+	else
+		color = 0x00FFFF;
 	dst = img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8));
 	// バイトがアラインメントされていない、つまりline_lengthが実際のウィンドウ幅と異なっているので、
 	//メモリオフセット(dst)は必ずmlx_get_data_addrで設定された行長を使用して計算する必要がある。
@@ -25,10 +25,26 @@ void	my_mlx_pixel_put(t_img *img, int x, int y, double z)
 
 int	close_esc(int keycode, t_data *data)
 {
-	// printf("keycode : %d\n", keycode);
+	printf("keycode : %d\n", keycode);
 	// printf("XK_Escape : %d\n", KEY_ESCAPE);
-	if (keycode == KEY_ESCAPE)
+	if (keycode == XK_Escape)
+	{
 		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
+		exit(0);
+	}
+	return (0);
+}
+
+int	deal_mouse(int button, int x, int y, t_data *data)
+{
+	if (button == 6)
+	{
+		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
+		exit(0);
+	}
+	printf("button : %d\n", button);
+	printf("x : %d\n", x);
+	printf("y : %d\n", y);
 	return (0);
 }
 
@@ -94,7 +110,8 @@ void draw_right(t_map *map, t_img *img, int i, int j)
 	while ((fabs(map->array[i][j + 1].x - map->array[i][j].vx) > 1.1) && \
 			(fabs(map->array[i][j + 1].y - map->array[i][j].vy) > 1.1))
     {
-		my_mlx_pixel_put(img, 300 + map->array[i][j].vx, 300 + map->array[i][j].vy, map->array[i][j].z);
+		// my_mlx_pixel_put(img, 800 + map->array[i][j].vx, 300 + map->array[i][j].vy, map->array[i][j].z);
+		my_mlx_pixel_put(img, (WIDTH / 2) + map->array[i][j].vx, (HEIGHT / 2) + map->array[i][j].vy, map->array[i][j].z);
         if (err * 2 > -dy)
         {
             err -= dy;
@@ -124,8 +141,9 @@ void draw_down(t_map *map, t_img *img, int i, int j)
 	while ((fabs(map->array[i + 1][j].x - map->array[i][j].vx) > 1.1 && \
 			fabs(map->array[i + 1][j].y - map->array[i][j].vy) > 1.1))
     {
-		my_mlx_pixel_put(img,300 + map->array[i][j].vx, 300 + map->array[i][j].vy, 0x00FFFF);
-        if (err * 2 > -dy)
+		// my_mlx_pixel_put(img, 800 + map->array[i][j].vx, 300 + map->array[i][j].vy, 0x00FFFF);
+		my_mlx_pixel_put(img, (WIDTH / 2) + map->array[i][j].vx, (HEIGHT / 2) + map->array[i][j].vy, 0x00FFFF);
+		if (err * 2 > -dy)
         {
             err -= dy;
             map->array[i][j].vx += sx;
@@ -143,11 +161,11 @@ void	draw_line(t_map *map, t_img *img)
 	int	i;
 	int	j;
 
-	j = 0;
-	while (j < map->row)
+	i = 0;
+	while (i < map->row)
 	{
-		i = 0;
-		while (i < map->col)
+		j = 0;
+		while (j < map->col)
 		{
 			map->array[i][j].vx = map->array[i][j].x;
 			map->array[i][j].vy = map->array[i][j].y;
@@ -157,9 +175,9 @@ void	draw_line(t_map *map, t_img *img)
 			map->array[i][j].vy = map->array[i][j].y;
 			if (i != map->row - 1)
 				draw_down(map, img, i, j);
-			i++;
+			j++;
 		}
-		j++;
+		i++;
 	}
 }
 
@@ -169,9 +187,9 @@ void	ft_mlx(t_map *map)
 	t_img	img;
 
 	data.mlx_ptr = mlx_init();
-	data.win_ptr = mlx_new_window(data.mlx_ptr, HEIGHT, WIDTH, "mlx 42");
+	data.win_ptr = mlx_new_window(data.mlx_ptr, WIDTH, HEIGHT, "mlx 42");
 	mlx_clear_window(data.mlx_ptr, data.win_ptr);
-	img.img = mlx_new_image(data.mlx_ptr, HEIGHT, WIDTH);
+	img.img = mlx_new_image(data.mlx_ptr, WIDTH, HEIGHT);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, \
 								&img.line_length, &img.endian); //メモリに保存されている画像の先頭アドレスを指すポインタを返す。このポインタから画像を修正することができる。
 	printf("bits_per_pixel = %d\n", img.bits_per_pixel);
@@ -181,7 +199,7 @@ void	ft_mlx(t_map *map)
 	mlx_put_image_to_window(data.mlx_ptr, data.win_ptr, img.img, 0, 0);
 
 	mlx_key_hook(data.win_ptr, close_esc, &data);
-	// mlx_mouse_hook(data.win_ptr, deal_mouse, &data);
+	mlx_mouse_hook(data.win_ptr, deal_mouse, &data);
 	// mlx_mouse_move(data.win_ptr, 250, 250);
 	mlx_loop(data.mlx_ptr);
 	// クリックしたら終了する処理を実装する。

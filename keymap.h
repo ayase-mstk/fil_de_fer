@@ -1,7 +1,7 @@
 #ifndef KEYMAP_H
 # define KEYMAP_H
 
-# if defined(LINUX) || defined(ARM)
+# if defined(_linux_) || defined(_unix_)
 // import from keysymdef.h
 #  define KEY_BACKSPACE		0xff08  /* Back space, back char */
 #  define KEY_TAB			0xff09
@@ -64,7 +64,7 @@
 #  define KEY_Z				0x007a  /* U+007A LATIN SMALL LETTER Z */
 
 # else
-// # if defined(OSX)
+// // # if defined(OSX)
 #  define KEY_BACKSPACE		0x0033
 #  define KEY_TAB			0x0030
 #  define KEY_RETURN			0x0024
