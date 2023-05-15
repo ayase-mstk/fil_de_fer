@@ -22,19 +22,20 @@
 
 # endif
 
-typedef struct s_data
+typedef struct s_img
 {
-	void	*mlx_ptr;
-	void	*win_ptr;
-}	t_data;
-
-typedef struct s_img {
 	void	*img;
 	char	*addr;
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
 }				t_img;
+
+typedef struct s_data
+{
+	void	*mlx_ptr;
+	void	*win_ptr;
+}	t_data;
 
 typedef struct s_xy
 {
@@ -68,6 +69,8 @@ typedef struct s_map
 	int			col;
 	t_xy		xy;
 	t_pos		pos;
+	t_data		*data;
+	t_img		*img;
 }	t_map;
 
 void		lst_free(t_map *map);

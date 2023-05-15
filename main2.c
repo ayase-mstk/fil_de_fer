@@ -1,5 +1,20 @@
 #include "fdf.h"
 
+void	free_map(t_map *map)
+{
+	int	i;
+
+	i = 0;
+	while (i < map->row)
+	{
+		free(map->array[i]);
+		map->array[i] = NULL;
+		i++;
+	}
+	free(map->array);
+	map->array = NULL;
+}
+
 void	free_strarr(char **strarr)
 {
 	int	i;
