@@ -14,7 +14,6 @@
 # include "libft/libft.h"
 # include "libftprintf/ft_printf.h"
 # include "gnl/get_next_line.h"
-// #include "./minilibx_mms_20191025_beta/mlx.h"
 // #include "X11/keysym.h"
 
 # ifndef M_PI
@@ -73,16 +72,17 @@ typedef struct s_map
 	t_img		*img;
 }	t_map;
 
-void		lst_free(t_map *map);
-t_map		*lst_init(void);
-t_mappoint	*lst_last(t_map *map);
-void		lst_print(t_map *map);
-void		lst_pushback(t_map *map, double x, double y, double z);
-size_t		lst_size(t_map *map);
 
+void		lst_print(t_map *map);
 double		ft_atof(const char *nptr);
 double		ft_max(double a, double b);
 double		ft_min(double a, double b);
+void		put_errormessage(char *str);
+void		read_map(t_map *map, char *map_name);
+void		split_map(t_map *map, char *lines[]);
+void		store_map(t_map *map, char **strarr, int row);
+void		free_strarr(char **strarr);
+void		free_map(t_map *map);
 void		map_range(t_map *map, double x, double y);
 void		pos_set(t_map *map, int width, int height);
 void		repos_xy(t_map *map);

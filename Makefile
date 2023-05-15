@@ -1,7 +1,8 @@
 NAME = fdf
 
-SRCS = main2.c \
+SRCS = main.c \
 		utils.c \
+		read_map.c \
 		position.c \
 		transform.c \
 		mlx.c \
@@ -9,12 +10,7 @@ SRCS = main2.c \
 		ft_atof.c \
 		gnl/get_next_line.c \
 		gnl/get_next_line_utils.c \
-		list/lst_print.c \
-		# list/lst_free.c \
-		# list/lst_init.c \
-		# list/lst_last.c \
-		# list/lst_pushback.c \
-		# list/lst_size.c \
+		list/lst_print.c
 
 OBJS = $(SRCS:%.c=%.o)
 

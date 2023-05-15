@@ -21,19 +21,25 @@ void	my_mlx_pixel_put(t_img *img, int x, int y, double z)
 	*(unsigned int *)dst = color;
 }
 
-int	close_window(t_data *data)
+int	close_window(t_map *map)
 {
-	mlx_destroy_window(data->mlx_ptr, data->win_ptr);
+	mlx_destroy_image(map->data->mlx_ptr, map->img->img);
+	mlx_destroy_window(map->data->mlx_ptr, map->data->win_ptr);
+	mlx_destroy_display(map->data->mlx_ptr);
+	free_map(map);
 	exit(0);
 }
 
-int	deal_key(int keycode, t_data *data)
+int	deal_key(int keycode, t_map *map)
 {
 	// printf("keycode : %d\n", keycode);s
 	// printf("XK_Escape : %d\n", KEY_ESCAPE);
 	if (keycode == XK_Escape)
 	{
-		mlx_destroy_window(data->mlx_ptr, data->win_ptr);
+		mlx_destroy_image(map->data->mlx_ptr, map->img->img);
+		mlx_destroy_window(map->data->mlx_ptr, map->data->win_ptr);
+		mlx_destroy_display(map->data->mlx_ptr);
+		free_map(map);
 		exit(0);
 	}
 	return (0);
@@ -158,8 +164,8 @@ void	ft_mlx(t_map *map)
 	draw_line(map, &img);
 	mlx_put_image_to_window(data.mlx_ptr, data.win_ptr, img.img, 0, 0);
 
-	mlx_hook(data.win_ptr, 17, 1L<<17, close_window, &data);
-	mlx_key_hook(data.win_ptr, deal_key, &data);
+	mlx_hook(data.win_ptr, 17, 1L<<17, close_window, map);
+	mlx_key_hook(data.win_ptr, deal_key, map);
 	// mlx_mouse_hook(data.win_ptr, deal_mouse, &data);
 	mlx_expose_hook(data.win_ptr, expose_hook, map);
 	// mlx_mouse_move(data.win_ptr, 250, 250);

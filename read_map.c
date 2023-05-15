@@ -13,6 +13,7 @@ void	free_map(t_map *map)
 	}
 	free(map->array);
 	map->array = NULL;
+	free(map);
 }
 
 void	free_strarr(char **strarr)
@@ -46,13 +47,17 @@ void	store_map(t_map *map, char **strarr, int row)
 	{
 		map->array[row][col].x = 40.0 * (double)row;
 		map->array[row][col].y = 40.0 * (double)col;
-		map->array[row][col].z = 10.0 * ft_atof(strarr[col]);
+		map->array[row][col].z = 40.0 * ft_atof(strarr[col]);
 		col++;
 	}
 	if (map->col == 0)
 		map->col = col;
 	if (map->col != col)
+	{
+		free_strarr(strarr);
+		free_map(map);
 		exit(1);
+	}
 }
 
 void	split_map(t_map *map, char *lines[])
@@ -73,9 +78,9 @@ void	split_map(t_map *map, char *lines[])
 	while (i < row)
 	{
 		strarr = ft_split(lines[i], ' ');
+		free(lines[i]);
 		store_map(map, strarr, i);
 		free_strarr(strarr);
-		free(lines[i]);
 		i++;
 	}
 }
@@ -103,27 +108,4 @@ void	read_map(t_map *map, char *map_name)
 	map->xy.y_max = 0;
 	map->xy.y_min = 0;
 	split_map(map, lines);
-}
-
-int	main(int ac, char **av)
-{
-	t_map	*map;
-
-	if (ac != 2 && ac != 4)
-		exit(0);
-	map = (t_map *)malloc(sizeof(t_map));
-	if (map == NULL)
-		exit(1);
-	read_map(map, av[1]);
-	// lst_print(map);
-	// printf("\n");
-	// ft_isometric1(map);
-	// ft_isometric2(map);
-	ft_isometric_projection(map);
-	// ft_rotation_z(map, 5.0);
-	// ft_rotation_x(map, 36.0);
-	// ft_rotation_y(map, -15.0);
-	lst_print(map);
-	ft_mlx(map);
-	return (0);
 }

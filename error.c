@@ -1,7 +1,7 @@
 #include "fdf.h"
 
-void	input_error(void)
+void	put_errormessage(char *str)
 {
-	ft_putstr_fd("Error(input data error)\n", 2);
+	ft_putstr_fd(str, 2);
 	exit (0);
 }
