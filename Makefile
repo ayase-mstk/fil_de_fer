@@ -2,6 +2,7 @@ NAME = fdf
 
 SRCS = main2.c \
 		utils.c \
+		position.c \
 		transform.c \
 		mlx.c \
 		error.c \

@@ -64,6 +64,7 @@ void	ft_isometric_projection(t_map *map)
 			map->array[i][j].x = (tmp_y - tmp_x) * cos(30 * M_PI / 180.0);
 			map->array[i][j].y = -map->array[i][j].z + (tmp_x + tmp_y) \
 									* sin(30 * M_PI / 180.0);
+			map_range(map, map->array[i][j].x, map->array[i][j].y);
 			j++;
 		}
 		i++;

@@ -18,8 +18,6 @@ void	my_mlx_pixel_put(t_img *img, int x, int y, double z)
 	else
 		color = 0x00FFFF;
 	dst = img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8));
-	// バイトがアラインメントされていない、つまりline_lengthが実際のウィンドウ幅と異なっているので、
-	//メモリオフセット(dst)は必ずmlx_get_data_addrで設定された行長を使用して計算する必要がある。
 	*(unsigned int *)dst = color;
 }
 
@@ -48,53 +46,7 @@ int	deal_mouse(int button, int x, int y, t_data *data)
 	return (0);
 }
 
-// int	put_line1(t_map *map, t_img *img, int i, int j)
-// {
-// 	int	tmp_x;
-// 	int	tmp_y;
-
-// 	tmp_x = map->array[i][j].x;
-// 	tmp_y = map->array[i][j].y;
-// 	while (tmp_x < map->array[i][j + 1].x * 10)
-// 	{
-// 		while (tmp_y < map->array[i + 1][j].y * 10)
-// 		{
-// 			my_mlx_pixel_put(img, tmp_x, tmp_y, 0x00FFFF);
-// 			tmp_y++;
-// 		}
-// 		tmp_x++;
-// 	}
-// 	return (0);
-// }
-
-// int	ft_bresenham(t_map *map, t_img *img)
-// {
-// 	int	i;
-// 	int	j;
-
-// 	i = 0;
-// 	while (i < map->row - 1)
-// 	{
-// 		j = 0;
-// 		while (j < map->col - 1)
-// 		{
-// 			int	slope_right = (map->array[i][j + 1].x - map->array[i][j].x) /\
-// 						(map->array[i][j + 1].y - map->array[i][j].y);
-// 			if (slope_right < 1)
-// 				put_line1(map, img, i, j);
-// 			int	slope_down = (map->array[i + 1][j].x - map->array[i][j].x) /\
-// 						(map->array[i + 1][j].y - map->array[i][j].y);
-// 			if (slope_down < 1)
-// 				put_line1(map, img, i , j);
-			
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-// 	return (0);
-// }
-
-void draw_right(t_map *map, t_img *img, int i, int j)
+void	draw_right(t_map *map, t_img *img, int i, int j)
 {
 	double	dx;
 	double	dy;
@@ -109,23 +61,22 @@ void draw_right(t_map *map, t_img *img, int i, int j)
 	err = dx - dy;
 	while ((fabs(map->array[i][j + 1].x - map->array[i][j].vx) > 1.1) && \
 			(fabs(map->array[i][j + 1].y - map->array[i][j].vy) > 1.1))
-    {
-		// my_mlx_pixel_put(img, 800 + map->array[i][j].vx, 300 + map->array[i][j].vy, map->array[i][j].z);
-		my_mlx_pixel_put(img, (WIDTH / 2) + map->array[i][j].vx, (HEIGHT / 2) + map->array[i][j].vy, map->array[i][j].z);
-        if (err * 2 > -dy)
-        {
-            err -= dy;
-            map->array[i][j].vx += sx;
-        }
-        if (err * 2 < dx)
-        {
-            err += dx;
-            map->array[i][j].vy += sy;
-        }
-    }
+	{
+		my_mlx_pixel_put(img, map->array[i][j].vx, map->array[i][j].vy, map->array[i][j].z);
+		if (err * 2 > -dy)
+		{
+			err -= dy;
+			map->array[i][j].vx += sx;
+		}
+		if (err * 2 < dx)
+		{
+			err += dx;
+			map->array[i][j].vy += sy;
+		}
+	}
 }
 
-void draw_down(t_map *map, t_img *img, int i, int j)
+void	draw_down(t_map *map, t_img *img, int i, int j)
 {
 	double	dx;
 	double	dy;
@@ -140,20 +91,19 @@ void draw_down(t_map *map, t_img *img, int i, int j)
 	err = dx - dy;
 	while ((fabs(map->array[i + 1][j].x - map->array[i][j].vx) > 1.1 && \
 			fabs(map->array[i + 1][j].y - map->array[i][j].vy) > 1.1))
-    {
-		// my_mlx_pixel_put(img, 800 + map->array[i][j].vx, 300 + map->array[i][j].vy, 0x00FFFF);
-		my_mlx_pixel_put(img, (WIDTH / 2) + map->array[i][j].vx, (HEIGHT / 2) + map->array[i][j].vy, 0x00FFFF);
+	{
+		my_mlx_pixel_put(img, map->array[i][j].vx, map->array[i][j].vy, 0x00FFFF);
 		if (err * 2 > -dy)
-        {
-            err -= dy;
-            map->array[i][j].vx += sx;
-        }
-        if (err * 2 < dx)
-        {
-            err += dx;
-            map->array[i][j].vy += sy;
-        }
-    }
+		{
+			err -= dy;
+			map->array[i][j].vx += sx;
+		}
+		if (err * 2 < dx)
+		{
+			err += dx;
+			map->array[i][j].vy += sy;
+		}
+	}
 }
 
 void	draw_line(t_map *map, t_img *img)
@@ -161,6 +111,8 @@ void	draw_line(t_map *map, t_img *img)
 	int	i;
 	int	j;
 
+	pos_set(map, WIDTH, HEIGHT);
+	repos_xy(map);
 	i = 0;
 	while (i < map->row)
 	{
@@ -191,10 +143,10 @@ void	ft_mlx(t_map *map)
 	mlx_clear_window(data.mlx_ptr, data.win_ptr);
 	img.img = mlx_new_image(data.mlx_ptr, WIDTH, HEIGHT);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, \
-								&img.line_length, &img.endian); //メモリに保存されている画像の先頭アドレスを指すポインタを返す。このポインタから画像を修正することができる。
+								&img.line_length, &img.endian);
 	printf("bits_per_pixel = %d\n", img.bits_per_pixel);
 	printf("line_length = %d\n", img.line_length);
-	// ft_bresenham(map, &img);
+
 	draw_line(map, &img);
 	mlx_put_image_to_window(data.mlx_ptr, data.win_ptr, img.img, 0, 0);
 

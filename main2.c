@@ -83,8 +83,10 @@ void	read_map(t_map *map, char *map_name)
 	close(fd);
 	map->col = 0;
 	map->row = 0;
-	map->xy.x = 0;
-	map->xy.y = 0;
+	map->xy.x_max = 0;
+	map->xy.x_min = 0;
+	map->xy.y_max = 0;
+	map->xy.y_min = 0;
 	split_map(map, lines);
 }
 

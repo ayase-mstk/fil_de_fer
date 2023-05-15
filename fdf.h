@@ -38,9 +38,17 @@ typedef struct s_img {
 
 typedef struct s_xy
 {
-	double	x;
-	double	y;
+	double	x_max;
+	double	x_min;
+	double	y_max;
+	double	y_min;
 }	t_xy;
+
+typedef struct s_pos
+{
+	int	x;
+	int	y;
+}	t_pos;
 
 typedef struct s_mappoint
 {
@@ -59,6 +67,7 @@ typedef struct s_map
 	int			row;
 	int			col;
 	t_xy		xy;
+	t_pos		pos;
 }	t_map;
 
 void		lst_free(t_map *map);
@@ -71,6 +80,9 @@ size_t		lst_size(t_map *map);
 double		ft_atof(const char *nptr);
 double		ft_max(double a, double b);
 double		ft_min(double a, double b);
+void		map_range(t_map *map, double x, double y);
+void		pos_set(t_map *map, int width, int height);
+void		repos_xy(t_map *map);
 void		ft_rotation_x(t_map *map, double theeta);
 void		ft_rotation_y(t_map *map, double theeta);
 void		ft_rotation_z(t_map *map, double theeta);
