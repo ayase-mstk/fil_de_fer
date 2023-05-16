@@ -1,34 +1,33 @@
 #include "fdf.h"
 
-void	free_map(t_map *map)
-{
-	int	i;
-
-	i = 0;
-	while (i < map->row)
-	{
-		free(map->array[i]);
-		map->array[i] = NULL;
-		i++;
-	}
-	free(map->array);
-	map->array = NULL;
-	free(map);
-}
-
-void	free_strarr(char **strarr)
+char	*check_color(char *strarr)
 {
 	int	i;
 
 	i = 0;
 	while (strarr[i])
 	{
-		free(strarr[i]);
-		strarr[i] = NULL;
+		if (strarr[i] == ',')
+			return (strarr + i + 1);
 		i++;
 	}
-	free(strarr);
-	strarr = NULL;
+	return (NULL);
+}
+
+void	set_z(t_map *map, char *strarr, int row, int col)
+{
+	if (check_color(strarr) != NULL)
+	{
+		map->array[row][col].color = ft_atoi_base(check_color(strarr), \
+						"0123456789ABCDEF", "0123456789abcdef");
+		ft_printf("%x\n", map->array[row][col].color);
+		map->array[row][col].z = 40 * (double)ft_atoi(&strarr[col]);
+	}
+	else
+	{
+		map->array[row][col].color = 0xFFFFFF;
+		map->array[row][col].z = 40 * (double)ft_atoi(strarr);
+	}
 }
 
 void	store_map(t_map *map, char **strarr, int row)
@@ -41,23 +40,19 @@ void	store_map(t_map *map, char **strarr, int row)
 		size++;
 	map->array[row] = (t_mappoint *)malloc(sizeof(t_mappoint) * (size + 1));
 	if (map->array[row] == NULL)
-		exit(1);
+		maparray_and_strarr_free(map, strarr);
 	col = 0;
 	while (strarr[col])
 	{
 		map->array[row][col].x = 40.0 * (double)row;
 		map->array[row][col].y = 40.0 * (double)col;
-		map->array[row][col].z = 40.0 * ft_atof(strarr[col]);
+		set_z(map, strarr[col], row, col);
 		col++;
 	}
 	if (map->col == 0)
 		map->col = col;
 	if (map->col != col)
-	{
-		free_strarr(strarr);
-		free_map(map);
-		exit(1);
-	}
+		maparray_and_strarr_free(map, strarr);
 }
 
 void	split_map(t_map *map, char *lines[])

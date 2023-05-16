@@ -11,7 +11,7 @@ int	main(int ac, char **av)
 		exit(1);
 	read_map(map, av[1]);
 	ft_isometric_projection(map);
-	lst_print(map);
+	// lst_print(map);
 	ft_mlx(map);
 	return (0);
 }

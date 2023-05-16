@@ -2,6 +2,7 @@ NAME = fdf
 
 SRCS = main.c \
 		utils.c \
+		free.c \
 		read_map.c \
 		position.c \
 		transform.c \

@@ -6,17 +6,12 @@
 #define HEIGHT 1080
 #define WIDTH 1920
 
-void	my_mlx_pixel_put(t_img *img, int x, int y, double z)
+void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
 {
 	char	*dst;
-	int		color;
 
 	if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT)
 		return ;
-	if (z <= 0)
-		color = 0xFFFFFF;
-	else
-		color = 0x00FFFF;
 	dst = img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8));
 	*(unsigned int *)dst = color;
 }
@@ -76,7 +71,7 @@ void	draw_right(t_map *map, t_img *img, int i, int j)
 	while ((fabs(map->array[i][j + 1].x - map->array[i][j].vx) > 1.1) && \
 			(fabs(map->array[i][j + 1].y - map->array[i][j].vy) > 1.1))
 	{
-		my_mlx_pixel_put(img, map->array[i][j].vx, map->array[i][j].vy, map->array[i][j].z);
+		my_mlx_pixel_put(img, map->array[i][j].vx, map->array[i][j].vy, now_color(map, i, j));
 		if (err * 2 > -dy)
 		{
 			err -= dy;
@@ -106,7 +101,7 @@ void	draw_down(t_map *map, t_img *img, int i, int j)
 	while ((fabs(map->array[i + 1][j].x - map->array[i][j].vx) > 1.1 && \
 			fabs(map->array[i + 1][j].y - map->array[i][j].vy) > 1.1))
 	{
-		my_mlx_pixel_put(img, map->array[i][j].vx, map->array[i][j].vy, 0x00FFFF);
+		my_mlx_pixel_put(img, map->array[i][j].vx, map->array[i][j].vy, map->array[i][j].color);
 		if (err * 2 > -dy)
 		{
 			err -= dy;

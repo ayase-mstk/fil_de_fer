@@ -52,13 +52,13 @@ typedef struct s_pos
 
 typedef struct s_mappoint
 {
-	double				x;
-	double				y;
-	double				z;
-	double				vx;
-	double				vy;
-	double				vz;
-	uint32_t			color;
+	double			x;
+	double			y;
+	double			z;
+	double			vx;
+	double			vy;
+	unsigned int	color;
+	unsigned int	vcolor;
 }	t_mappoint;
 
 typedef struct s_map
@@ -72,27 +72,26 @@ typedef struct s_map
 	t_img		*img;
 }	t_map;
 
-
-void		lst_print(t_map *map);
-double		ft_atof(const char *nptr);
-double		ft_max(double a, double b);
-double		ft_min(double a, double b);
-void		put_errormessage(char *str);
-void		read_map(t_map *map, char *map_name);
-void		split_map(t_map *map, char *lines[]);
-void		store_map(t_map *map, char **strarr, int row);
-void		free_strarr(char **strarr);
-void		free_map(t_map *map);
-void		map_range(t_map *map, double x, double y);
-void		pos_set(t_map *map, int width, int height);
-void		repos_xy(t_map *map);
-void		ft_rotation_x(t_map *map, double theeta);
-void		ft_rotation_y(t_map *map, double theeta);
-void		ft_rotation_z(t_map *map, double theeta);
-void		ft_isometric_projection(t_map *map);
-void		ft_isometric1(t_map *map);
-void		ft_isometric2(t_map *map);
-void		ft_mlx(t_map *map);
-int			main(int ac, char **av);
+void			lst_print(t_map *map);
+unsigned int	ft_atoi_base(char *str, char *base1, char *base2);
+double			ft_atof(const char *nptr);
+void			put_errormessage(char *str);
+void			read_map(t_map *map, char *map_name);
+void			split_map(t_map *map, char *lines[]);
+void			store_map(t_map *map, char **strarr, int row);
+void			free_strarr(char **strarr);
+void			free_map(t_map *map);
+void			maparray_and_strarr_free(t_map *map, char **strarr);
+void			map_range(t_map *map, double x, double y);
+void			pos_set(t_map *map, int width, int height);
+void			repos_xy(t_map *map);
+void			ft_rotation_x(t_map *map, double theeta);
+void			ft_rotation_y(t_map *map, double theeta);
+void			ft_rotation_z(t_map *map, double theeta);
+void			ft_isometric_projection(t_map *map);
+void			ft_isometric1(t_map *map);
+void			ft_isometric2(t_map *map);
+void			ft_mlx(t_map *map);
+int				main(int ac, char **av);
 
 #endif
