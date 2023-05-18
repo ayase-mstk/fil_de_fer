@@ -1,17 +1,18 @@
 NAME = fdf
 
-SRCS = main.c \
+SRCS = 	main.c \
 		utils.c \
+		lst_print.c \
 		free.c \
 		read_map.c \
 		position.c \
 		transform.c \
+		draw.c \
+		color.c \
 		mlx.c \
 		error.c \
-		ft_atof.c \
 		gnl/get_next_line.c \
-		gnl/get_next_line_utils.c \
-		list/lst_print.c
+		gnl/get_next_line_utils.c
 
 OBJS = $(SRCS:%.c=%.o)
 

@@ -1,5 +1,13 @@
 #include "fdf.h"
 
+int	ft_abs(int n)
+{
+	if (n < 0)
+		return (-n);
+	else
+		return (n);
+}
+
 static	unsigned int	ft_check_num(char c, char *base1, char *base2)
 {
 	int	i;
@@ -14,10 +22,10 @@ static	unsigned int	ft_check_num(char c, char *base1, char *base2)
 	return (0);
 }
 
-unsigned int	ft_atoi_base(char *str, char *base1, char *base2)
+int	ft_atoi_base(char *str, char *base1, char *base2)
 {
-	int					i;
-	unsigned int		result;
+	int		i;
+	int		result;
 
 	i = 0;
 	result = 0;

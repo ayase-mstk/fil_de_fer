@@ -1,6 +1,6 @@
 #include "fdf.h"
 
-char	*check_color(char *strarr)
+char	*color_is_designated(char *strarr)
 {
 	int	i;
 
@@ -14,19 +14,18 @@ char	*check_color(char *strarr)
 	return (NULL);
 }
 
-void	set_z(t_map *map, char *strarr, int row, int col)
+void	set_z(t_mappoint *point, char *strarr)
 {
-	if (check_color(strarr) != NULL)
+	if (color_is_designated(strarr))
 	{
-		map->array[row][col].color = ft_atoi_base(check_color(strarr), \
+		point->color = ft_atoi_base(color_is_designated(strarr), \
 						"0123456789ABCDEF", "0123456789abcdef");
-		ft_printf("%x\n", map->array[row][col].color);
-		map->array[row][col].z = 40 * (double)ft_atoi(&strarr[col]);
+		point->z = 40 * ft_atoi(strarr);
 	}
 	else
 	{
-		map->array[row][col].color = 0xFFFFFF;
-		map->array[row][col].z = 40 * (double)ft_atoi(strarr);
+		point->color = INDIGO;
+		point->z = 40 * ft_atoi(strarr);
 	}
 }
 
@@ -44,15 +43,18 @@ void	store_map(t_map *map, char **strarr, int row)
 	col = 0;
 	while (strarr[col])
 	{
-		map->array[row][col].x = 40.0 * (double)row;
-		map->array[row][col].y = 40.0 * (double)col;
-		set_z(map, strarr[col], row, col);
+		map->array[row][col].x = 40 * row;
+		map->array[row][col].y = 40 * col;
+		set_z(&map->array[row][col], strarr[col]);
 		col++;
 	}
 	if (map->col == 0)
 		map->col = col;
 	if (map->col != col)
+	{
+		ft_putstr_fd("Invalid map(widths are not same)\n", 2);
 		maparray_and_strarr_free(map, strarr);
+	}
 }
 
 void	split_map(t_map *map, char *lines[])
@@ -98,9 +100,13 @@ void	read_map(t_map *map, char *map_name)
 	close(fd);
 	map->col = 0;
 	map->row = 0;
-	map->xy.x_max = 0;
-	map->xy.x_min = 0;
-	map->xy.y_max = 0;
-	map->xy.y_min = 0;
+	map->range.x_max = 0;
+	map->range.x_min = 0;
+	map->range.y_max = 0;
+	map->range.y_min = 0;
+	map->range.z_max = 0;
+	map->range.z_min = 0;
+	map->range.color_max = 0x000000;
+	map->range.color_min = 0xFFFFFF;
 	split_map(map, lines);
 }
