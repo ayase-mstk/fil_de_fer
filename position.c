@@ -1,6 +1,6 @@
 #include "fdf.h"
 
-void	map_range(t_map *map, int x, int y, int z, int color)
+void	map_range(t_map *map, int x, int y, int z)
 {
 	if (map->range.x_min > x)
 		map->range.x_min = x;
@@ -14,6 +14,10 @@ void	map_range(t_map *map, int x, int y, int z, int color)
 		map->range.z_min = z;
 	if (map->range.z_max < z)
 		map->range.z_max = z;
+}
+
+void	color_range(t_map *map, int color)
+{
 	if (map->range.color_min > color)
 		map->range.color_min = color;
 	if (map->range.color_max < color)
@@ -22,11 +26,40 @@ void	map_range(t_map *map, int x, int y, int z, int color)
 
 void	set_scale(t_map *map)
 {
-	if (map->row >= map->col)
-		map->scale = (double)(HEIGHT / 2) / (double)map->row;
+	int	range_max;
+
+	range_max = ft_max(map->row, map->col);
+	range_max = ft_max(range_max, map->range.z_max - map->range.z_min);
+	if (range_max == map->row)
+		map->scale = (double)(HEIGHT / 2) / (double)range_max;
+	else if (range_max == map->col)
+		map->scale = (double)(WIDTH / 2) / (double)range_max;
 	else
-		map->scale = (double)(WIDTH / 2) / (double)map->col;
+		map->scale = (double)(HEIGHT) / (double)range_max;
 	map->scale = map->scale * 3 / 4;
+}
+
+void	scale_points(t_map *map)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	while (i < map->row)
+	{
+		j = 0;
+		while (j < map->col)
+		{
+			map->array[i][j].x = (int)((double)map->array[i][j].x \
+									* map->scale);
+			map->array[i][j].y = (int)((double)map->array[i][j].y \
+									* map->scale);
+			map->array[i][j].z = (int)((double)map->array[i][j].z \
+									* map->scale);
+			j++;
+		}
+		i++;
+	}
 }
 
 void	pos_set(t_map *map, int width, int height)
@@ -44,7 +77,6 @@ void	repos_xy(t_map *map)
 	double	z_pos;
 
 	z_range = map->range.z_max - map->range.z_min;
-	set_scale(map);
 	i = 0;
 	while (i < map->row)
 	{
@@ -52,13 +84,11 @@ void	repos_xy(t_map *map)
 		while (j < map->col)
 		{
 			map->array[i][j].x += map->pos.x;
-			// map->array[i][j].x *= map->scale;
 			map->array[i][j].y += map->pos.y;
-			// map->array[i][j].y *= map->scale;
 			z_pos = (double)(map->array[i][j].z - map->range.z_min) \
 					/ (double)z_range;
-			map->array[i][j].color = (int)((1 - z_pos) * map->range.color_min + \
-											z_pos * map->range.color_max);
+			// map->array[i][j].color = (int)((1 - z_pos) * map->range.color_min + \
+			// 								z_pos * map->range.color_max);
 			j++;
 		}
 		i++;

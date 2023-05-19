@@ -89,6 +89,7 @@ typedef struct s_map
 }	t_map;
 
 void			lst_print(t_map *map);
+int				ft_max(int a, int b);
 int				ft_abs(int n);
 int				ft_atoi_base(char *str, char *base1, char *base2);
 void			put_errormessage(char *str);
@@ -102,12 +103,16 @@ void			ft_rotation_x(t_map *map, double theeta);
 void			ft_rotation_y(t_map *map, double theeta);
 void			ft_rotation_z(t_map *map, double theeta);
 void			ft_isometric_projection(t_map *map);
-void			map_range(t_map *map, int x, int y, int z, int color);
+void			map_range(t_map *map, int x, int y, int z);
+void			color_range(t_map *map, int color);
 void			set_scale(t_map *map);
+void			scale_points(t_map *map);
 void			pos_set(t_map *map, int width, int height);
 void			repos_xy(t_map *map);
 void			draw_line(t_map *map, t_img *img);
-int				now_color(t_mappoint pre, t_mappoint now, t_mappoint next, t_point delta);
+void			re_draw_line(t_map *map);
+int				now_color(t_mappoint pre, t_mappoint now, \
+							t_mappoint next, t_point delta);
 void			ft_mlx(t_map *map);
 int				main(int ac, char **av);
 

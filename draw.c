@@ -87,6 +87,37 @@ void	draw_down(t_mappoint **array, t_img *img, int i, int j)
 	}
 }
 
+void	re_draw_line(t_map *map)
+{
+	int	i;
+	int	j;
+	t_img	image;
+
+	image.img = mlx_new_image(map->data->mlx_ptr, WIDTH, HEIGHT);
+	image.addr = mlx_get_data_addr(image.img, &image.bits_per_pixel, &image.line_length, &image.endian);
+
+	scale_points(map);
+	i = 0;
+	while (i < map->row)
+	{
+		j = 0;
+		while (j < map->col)
+		{
+			map->array[i][j].vx = map->array[i][j].x;
+			map->array[i][j].vy = map->array[i][j].y;
+			if (j != map->col - 1)
+				draw_right(map->array, &image, i, j);
+			map->array[i][j].vx = map->array[i][j].x;
+			map->array[i][j].vy = map->array[i][j].y;
+			if (i != map->row - 1)
+				draw_down(map->array, &image, i, j);
+			j++;
+		}
+		i++;
+	}
+	mlx_put_image_to_window(map->data->mlx_ptr, map->data->win_ptr, image.img, 0, 0);
+}
+
 void	draw_line(t_map *map, t_img *img)
 {
 	int	i;
