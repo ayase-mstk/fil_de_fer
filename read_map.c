@@ -14,46 +14,48 @@ char	*color_is_designated(char *strarr)
 	return (NULL);
 }
 
-void	set_z(t_mappoint *point, char *strarr)
+void	set_z(t_mappoint *point, char *strarr, double scale)
 {
 	if (color_is_designated(strarr))
 	{
 		point->color = ft_atoi_base(color_is_designated(strarr), \
 						"0123456789ABCDEF", "0123456789abcdef");
-		point->z = 40 * ft_atoi(strarr);
+		point->z = (int)(scale * (double)ft_atoi(strarr));
 	}
 	else
 	{
 		point->color = INDIGO;
-		point->z = 40 * ft_atoi(strarr);
+		point->z = (int)(scale * (double)ft_atoi(strarr));
 	}
 }
 
 void	store_map(t_map *map, char **strarr, int row)
 {
-	int	size;
 	int	col;
 
-	size = 0;
-	while (strarr[size])
-		size++;
-	map->array[row] = (t_mappoint *)malloc(sizeof(t_mappoint) * (size + 1));
-	if (map->array[row] == NULL)
-		maparray_and_strarr_free(map, strarr);
 	col = 0;
 	while (strarr[col])
-	{
-		map->array[row][col].x = 40 * row;
-		map->array[row][col].y = 40 * col;
-		set_z(&map->array[row][col], strarr[col]);
 		col++;
-	}
+	map->array[row] = (t_mappoint *)malloc(sizeof(t_mappoint) * (col + 1));
+	if (map->array[row] == NULL)
+		maparray_and_strarr_free(map, strarr);
 	if (map->col == 0)
+	{
 		map->col = col;
+		set_scale(map);
+	}
 	if (map->col != col)
 	{
 		ft_putstr_fd("Invalid map(widths are not same)\n", 2);
 		maparray_and_strarr_free(map, strarr);
+	}
+	col = 0;
+	while (strarr[col])
+	{
+		map->array[row][col].x = (int)(map->scale * (double)row);
+		map->array[row][col].y = (int)(map->scale * (double)col);
+		set_z(&map->array[row][col], strarr[col], map->scale);
+		col++;
 	}
 }
 

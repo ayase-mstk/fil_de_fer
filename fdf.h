@@ -81,6 +81,7 @@ typedef struct s_map
 	t_mappoint	**array;
 	int			row;
 	int			col;
+	double		scale;
 	t_range		range;
 	t_pos		pos;
 	t_data		*data;
@@ -102,6 +103,7 @@ void			ft_rotation_y(t_map *map, double theeta);
 void			ft_rotation_z(t_map *map, double theeta);
 void			ft_isometric_projection(t_map *map);
 void			map_range(t_map *map, int x, int y, int z, int color);
+void			set_scale(t_map *map);
 void			pos_set(t_map *map, int width, int height);
 void			repos_xy(t_map *map);
 void			draw_line(t_map *map, t_img *img);
