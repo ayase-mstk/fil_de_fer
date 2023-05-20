@@ -50,12 +50,15 @@ void	scale_points(t_map *map)
 		j = 0;
 		while (j < map->col)
 		{
-			map->array[i][j].x = (int)((double)map->array[i][j].x \
-									* map->scale);
-			map->array[i][j].y = (int)((double)map->array[i][j].y \
-									* map->scale);
-			map->array[i][j].z = (int)((double)map->array[i][j].z \
-									* map->scale);
+			map->array[i][j].x *= (int)map->scale;
+			map->array[i][j].y *= (int)map->scale;
+			map->array[i][j].z *= (int)map->scale;
+			// map->array[i][j].x = (int)((double)map->array[i][j].x \
+			// 						* map->scale);
+			// map->array[i][j].y = (int)((double)map->array[i][j].y \
+			// 						* map->scale);
+			// map->array[i][j].z = (int)((double)map->array[i][j].z \
+			// 						* map->scale);
 			j++;
 		}
 		i++;
@@ -73,10 +76,10 @@ void	repos_xy(t_map *map)
 {
 	int		i;
 	int		j;
-	int		z_range;
-	double	z_pos;
+	// int		z_range;
+	// double	z_pos;
 
-	z_range = map->range.z_max - map->range.z_min;
+	// z_range = map->range.z_max - map->range.z_min;
 	i = 0;
 	while (i < map->row)
 	{
@@ -85,8 +88,8 @@ void	repos_xy(t_map *map)
 		{
 			map->array[i][j].x += map->pos.x;
 			map->array[i][j].y += map->pos.y;
-			z_pos = (double)(map->array[i][j].z - map->range.z_min) \
-					/ (double)z_range;
+			// z_pos = (double)(map->array[i][j].z - map->range.z_min) \
+			// 		/ (double)z_range;
 			// map->array[i][j].color = (int)((1 - z_pos) * map->range.color_min + \
 			// 								z_pos * map->range.color_max);
 			j++;

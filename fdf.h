@@ -71,8 +71,6 @@ typedef struct s_mappoint
 	int	x;
 	int	y;
 	int	z;
-	int	vx;
-	int	vy;
 	int	color;
 }	t_mappoint;
 
@@ -82,6 +80,7 @@ typedef struct s_map
 	int			row;
 	int			col;
 	double		scale;
+	int			zoom;
 	t_range		range;
 	t_pos		pos;
 	t_data		*data;
@@ -109,8 +108,8 @@ void			set_scale(t_map *map);
 void			scale_points(t_map *map);
 void			pos_set(t_map *map, int width, int height);
 void			repos_xy(t_map *map);
-void			draw_line(t_map *map, t_img *img);
-void			re_draw_line(t_map *map);
+void			draw_image(t_map *map);
+void			re_draw_image(t_map *map);
 int				now_color(t_mappoint pre, t_mappoint now, \
 							t_mappoint next, t_point delta);
 void			ft_mlx(t_map *map);

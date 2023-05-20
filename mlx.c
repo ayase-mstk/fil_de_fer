@@ -11,7 +11,7 @@ int	close_window(t_map *map)
 
 int	deal_key(int keycode, t_map *map)
 {
-	// printf("keycode : %d\n", keycode);s
+	// printf("keycode : %d\n", keycode);
 	// printf("XK_Escape : %d\n", KEY_ESCAPE);
 	if (keycode == XK_Escape)
 	{
@@ -26,16 +26,20 @@ int	deal_key(int keycode, t_map *map)
 
 void	ft_zoom(int button, t_map *map)
 {
+	mlx_destroy_image(map->data->mlx_ptr, map->img->img);
+	printf("map->zoom : %d\n", map->zoom);
 	if (button == 4)
-		map->scale -= 0.5;
+		map->zoom -= 1;
 	else if (button == 5)
-		map->scale += 0.5;
-	re_draw_line(map);
+		map->zoom += 1;
+	printf("map->zoom : %d\n", map->zoom);
+	re_draw_image(map);
 }
 
 int	deal_mouse(int button, int x, int y, t_map *map)
 {
 	x *= y;
+	y *= x;
 	if (button == 4 || button == 5)
 		ft_zoom(button, map);
 	return (0);
@@ -69,13 +73,13 @@ void	ft_mlx(t_map *map)
 										&map->img->bits_per_pixel, \
 										&map->img->line_length, \
 										&map->img->endian);
-	draw_line(map, map->img);
+	draw_image(map);
 	mlx_put_image_to_window(map->data->mlx_ptr, \
 		map->data->win_ptr, map->img->img, 0, 0);
 
 	// set_hook(map);
 	mlx_hook(map->data->win_ptr, 17, 1L<<17, close_window, map);
-	// mlx_key_hook(data.win_ptr, deal_key, map);
+	mlx_key_hook(map->data->win_ptr, deal_key, map);
 	mlx_mouse_hook(map->data->win_ptr, deal_mouse, map->data);
 	mlx_expose_hook(map->data->win_ptr, expose_hook, map);
 	mlx_loop(map->data->mlx_ptr);

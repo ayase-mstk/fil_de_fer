@@ -1,6 +1,8 @@
 #include "fdf.h"
 
-void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
+int ok = 0;
+
+static void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
 {
 	char	*dst;
 
@@ -10,7 +12,7 @@ void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-int	ft_slope(double a, double b)
+static int	ft_slope(double a, double b)
 {
 	if (a < b)
 		return (1);
@@ -18,36 +20,36 @@ int	ft_slope(double a, double b)
 		return (-1);
 }
 
-void	draw_right(t_mappoint **array, t_img *img, int i, int j)
-{
-	t_point		delta;
-	t_point		slope;
-	t_mappoint	now;
-	t_mappoint	next;
-	int			err;
+// void	draw_right(t_mappoint **array, t_img *img, int i, int j)
+// {
+// 	t_point		delta;
+// 	t_point		slope;
+// 	t_mappoint	now;
+// 	t_mappoint	next;
+// 	int			err;
 
-	delta.x = ft_abs(array[i][j + 1].x - array[i][j].x);
-	delta.y = ft_abs(array[i][j + 1].y - array[i][j].y);
-	slope.x = ft_slope(array[i][j].x, array[i][j + 1].x);
-	slope.y = ft_slope(array[i][j].y, array[i][j + 1].y);
-	err = delta.x - delta.y;
-	now = array[i][j];
-	next = array[i][j + 1];
-	while (now.vx != next.x && now.vy != next.y)
-	{
-		my_mlx_pixel_put(img, now.vx, now.vy, now_color(array[i][j], now, next, delta));
-		if (err * 2 > -delta.y)
-		{
-			err -= delta.y;
-			now.vx += slope.x;
-		}
-		if (err * 2 < delta.x)
-		{
-			err += delta.x;
-			now.vy += slope.y;
-		}
-	}
-}
+// 	delta.x = ft_abs(array[i][j + 1].x - array[i][j].x);
+// 	delta.y = ft_abs(array[i][j + 1].y - array[i][j].y);
+// 	slope.x = ft_slope(array[i][j].x, array[i][j + 1].x);
+// 	slope.y = ft_slope(array[i][j].y, array[i][j + 1].y);
+// 	err = delta.x - delta.y;
+// 	now = array[i][j];
+// 	next = array[i][j + 1];
+// 	while (now.vx != next.x && now.vy != next.y)
+// 	{
+// 		my_mlx_pixel_put(img, now.vx, now.vy, now_color(array[i][j], now, next, delta));
+// 		if (err * 2 > -delta.y)
+// 		{
+// 			err -= delta.y;
+// 			now.vx += slope.x;
+// 		}
+// 		if (err * 2 < delta.x)
+// 		{
+// 			err += delta.x;
+// 			now.vy += slope.y;
+// 		}
+// 	}
+// }
 //errは、x軸方向の誤差を表しています。
 //err * 2 > -delta.yは、x軸方向の誤差が-y軸方向の距離より大きい場合を表しています。
 //err * 2 < delta.xは、x軸方向の誤差がx軸方向の距離より小さい場合を表しています。
@@ -56,69 +58,99 @@ void	draw_right(t_mappoint **array, t_img *img, int i, int j)
 //err += delta.xは、x軸方向の誤差にx軸方向の距離を足した値をx軸方向の誤差に代入することを表しています。
 //now.vy += slope.yは、現在の座標のy軸方向に傾きを足した値を現在の座標のy軸方向に代入することを表しています。
 
-void	draw_down(t_mappoint **array, t_img *img, int i, int j)
+// static t_mappoint	*copy_mappoint(t_mappoint *pre)
+// {
+// 	t_mappoint	*now;
+
+// 	now = malloc(sizeof(t_mappoint));
+// 	now->x = pre->x;
+// 	now->y = pre->y;
+// 	now->z = pre->z;
+// 	now->color = pre->color;
+// 	return (now);
+// }
+
+static void	draw_line(t_mappoint pre, t_mappoint next, t_img *img)
 {
+	t_mappoint	now;
 	t_point		delta;
 	t_point		slope;
-	t_mappoint	now;
-	t_mappoint	next;
 	int			err;
 
-	delta.x = ft_abs(array[i + 1][j].x - array[i][j].x);
-	delta.y = ft_abs(array[i + 1][j].y - array[i][j].y);
-	slope.x = ft_slope(array[i][j].x, array[i + 1][j].x);
-	slope.y = ft_slope(array[i][j].y, array[i + 1][j].y);
+	delta.x = ft_abs(next.x - pre.x);
+	delta.y = ft_abs(next.y - pre.y);
+	slope.x = ft_slope(pre.x, next.x);
+	slope.y = ft_slope(pre.y, next.y);
 	err = delta.x - delta.y;
-	now = array[i][j];
-	next = array[i + 1][j];
-	while (now.vx != next.x && now.vy != next.y)
+	// now = copy_mappoint(&pre);
+	now = pre;
+	while (now.x != next.x && now.y != next.y)
 	{
-		my_mlx_pixel_put(img, now.vx, now.vy, now_color(array[i][j], now, next, delta));
+		my_mlx_pixel_put(img, now.x, now.y, now_color(pre, now, next, delta));
 		if (err * 2 > -delta.y)
 		{
 			err -= delta.y;
-			now.vx += slope.x;
+			now.x += slope.x;
 		}
 		if (err * 2 < delta.x)
 		{
 			err += delta.x;
-			now.vy += slope.y;
+			now.y += slope.y;
 		}
 	}
 }
 
-void	re_draw_line(t_map *map)
+void	zoom_points(t_map *map)
 {
 	int	i;
 	int	j;
-	t_img	image;
 
-	image.img = mlx_new_image(map->data->mlx_ptr, WIDTH, HEIGHT);
-	image.addr = mlx_get_data_addr(image.img, &image.bits_per_pixel, &image.line_length, &image.endian);
-
-	scale_points(map);
+	if (map->zoom == 0)
+		return ;
 	i = 0;
 	while (i < map->row)
 	{
 		j = 0;
 		while (j < map->col)
 		{
-			map->array[i][j].vx = map->array[i][j].x;
-			map->array[i][j].vy = map->array[i][j].y;
-			if (j != map->col - 1)
-				draw_right(map->array, &image, i, j);
-			map->array[i][j].vx = map->array[i][j].x;
-			map->array[i][j].vy = map->array[i][j].y;
-			if (i != map->row - 1)
-				draw_down(map->array, &image, i, j);
+			map->array[i][j].x *= map->zoom;
+			map->array[i][j].y *= map->zoom;
+			map->array[i][j].z *= map->zoom;
 			j++;
 		}
 		i++;
 	}
-	mlx_put_image_to_window(map->data->mlx_ptr, map->data->win_ptr, image.img, 0, 0);
 }
 
-void	draw_line(t_map *map, t_img *img)
+void	re_draw_image(t_map *map)
+{
+	int	i;
+	int	j;
+
+	// mlx_destroy_image(map->data->mlx_ptr, map->img->img);
+	zoom_points(map);
+	i = 0;
+	while (i < map->row)
+	{
+		j = 0;
+		while (j < map->col)
+		{
+			// map->array[i][j].vx = map->array[i][j].x;
+			// map->array[i][j].vy = map->array[i][j].y;
+			if (j != map->col - 1)
+				draw_line(map->array[i][j], map->array[i][j + 1], map->img);
+			// map->array[i][j].vx = map->array[i][j].x;
+			// map->array[i][j].vy = map->array[i][j].y;
+			if (i != map->row - 1)
+				draw_line(map->array[i][j], map->array[i + 1][j], map->img);
+			j++;
+		}
+		i++;
+	}
+	mlx_put_image_to_window(map->data->mlx_ptr, map->data->win_ptr, map->img->img, 0, 0);
+}
+
+void	draw_image(t_map *map)
 {
 	int	i;
 	int	j;
@@ -131,14 +163,10 @@ void	draw_line(t_map *map, t_img *img)
 		j = 0;
 		while (j < map->col)
 		{
-			map->array[i][j].vx = map->array[i][j].x;
-			map->array[i][j].vy = map->array[i][j].y;
 			if (j != map->col - 1)
-				draw_right(map->array, img, i, j);
-			map->array[i][j].vx = map->array[i][j].x;
-			map->array[i][j].vy = map->array[i][j].y;
+				draw_line(map->array[i][j], map->array[i][j + 1], map->img);
 			if (i != map->row - 1)
-				draw_down(map->array, img, i, j);
+				draw_line(map->array[i][j], map->array[i + 1][j], map->img);
 			j++;
 		}
 		i++;
