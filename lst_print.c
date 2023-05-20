@@ -1,6 +1,6 @@
 #include "../fdf.h"
 
-void	lst_print(t_map *map)
+void	lst_print(t_map *map, t_mappoint **array)
 {
 	int			i;
 	int			j;
@@ -12,7 +12,7 @@ void	lst_print(t_map *map)
 		j = 0;
 		while (j < map->col)
 		{
-			now = map->array[i][j];
+			now = array[i][j];
 			ft_printf("x=%d, y=%d, z=%d, color=%x\n", now.x, now.y, now.z, now.color);
 			j++;
 		}

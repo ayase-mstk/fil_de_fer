@@ -77,6 +77,8 @@ typedef struct s_mappoint
 typedef struct s_map
 {
 	t_mappoint	**array;
+	t_mappoint	**para;
+	t_mappoint	**iso;
 	int			row;
 	int			col;
 	double		scale;
@@ -87,8 +89,9 @@ typedef struct s_map
 	t_img		*img;
 }	t_map;
 
-void			lst_print(t_map *map);
+void			lst_print(t_map *map, t_mappoint **array);
 int				ft_max(int a, int b);
+int				ft_min(int a, int b);
 int				ft_abs(int n);
 int				ft_atoi_base(char *str, char *base1, char *base2);
 void			put_errormessage(char *str);
@@ -102,17 +105,18 @@ void			ft_rotation_x(t_map *map, double theeta);
 void			ft_rotation_y(t_map *map, double theeta);
 void			ft_rotation_z(t_map *map, double theeta);
 void			ft_isometric_projection(t_map *map);
-void			map_range(t_map *map, int x, int y, int z);
-void			color_range(t_map *map, int color);
+void			map_range(t_map *map, t_mappoint **array);
 void			set_scale(t_map *map);
 void			scale_points(t_map *map);
-void			pos_set(t_map *map, int width, int height);
-void			repos_xy(t_map *map);
-void			draw_image(t_map *map);
-void			re_draw_image(t_map *map);
+void			pos_set(t_map *map);
+void			repos_xy(t_map *map, t_mappoint **array);
+void			draw_image(t_map *map, t_mappoint **array);
+void			draw_iso(t_map *map);
+void			draw_para(t_map *map);
 int				now_color(t_mappoint pre, t_mappoint now, \
 							t_mappoint next, t_point delta);
-void			ft_mlx(t_map *map);
+// void			ft_mlx(t_map *map);
+void			set_hooks(t_map *map);
 int				main(int ac, char **av);
 
 #endif

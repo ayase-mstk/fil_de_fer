@@ -1,27 +1,41 @@
 #include "fdf.h"
 
-void	map_range(t_map *map, int x, int y, int z)
+void	init_range(t_range *range)
 {
-	if (map->range.x_min > x)
-		map->range.x_min = x;
-	if (map->range.x_max < x)
-		map->range.x_max = x;
-	if (map->range.y_min > y)
-		map->range.y_min = y;
-	if (map->range.y_max < y)
-		map->range.y_max = y;
-	if (map->range.z_min > z)
-		map->range.z_min = z;
-	if (map->range.z_max < z)
-		map->range.z_max = z;
+	range->x_max = INT_MIN;
+	range->y_max = INT_MIN;
+	range->z_max = INT_MIN;
+	range->color_max = INT_MIN;
+	range->x_min = INT_MAX;
+	range->y_min = INT_MAX;
+	range->z_min = INT_MAX;
+	range->color_min = INT_MAX;
 }
 
-void	color_range(t_map *map, int color)
+void	map_range(t_map *map, t_mappoint **array)
 {
-	if (map->range.color_min > color)
-		map->range.color_min = color;
-	if (map->range.color_max < color)
-		map->range.color_max = color;
+	int	i;
+	int	j;
+
+	init_range(&map->range);
+	i = 0;
+	while (i < map->row)
+	{
+		j = 0;
+		while (j < map->col)
+		{
+			map->range.x_min = ft_min(map->range.x_min, array[i][j].x);
+			map->range.x_max = ft_max(map->range.x_max, array[i][j].x);
+			map->range.y_min = ft_min(map->range.y_min, array[i][j].y);
+			map->range.y_max = ft_max(map->range.y_max, array[i][j].y);
+			map->range.z_min = ft_min(map->range.z_min, array[i][j].z);
+			map->range.z_max = ft_max(map->range.z_max, array[i][j].z);
+			map->range.color_min = ft_min(map->range.color_min, array[i][j].color);
+			map->range.color_max = ft_max(map->range.color_max, array[i][j].color);
+			j++;
+		}
+		i++;
+	}
 }
 
 void	set_scale(t_map *map)
@@ -44,6 +58,8 @@ void	scale_points(t_map *map)
 	int		i;
 	int		j;
 
+	map_range(map, map->array);
+	set_scale(map);
 	i = 0;
 	while (i < map->row)
 	{
@@ -65,14 +81,14 @@ void	scale_points(t_map *map)
 	}
 }
 
-void	pos_set(t_map *map, int width, int height)
+void	pos_set(t_map *map)
 {
-	map->pos.x = (width / 2) - (map->range.x_max + map->range.x_min) / 2;
-	map->pos.y = (height / 2) - (map->range.y_max + map->range.y_min) / 2;
+	map->pos.x = (WIDTH / 2) - (map->range.x_max + map->range.x_min) / 2;
+	map->pos.y = (HEIGHT / 2) - (map->range.y_max + map->range.y_min) / 2;
 }
 
 
-void	repos_xy(t_map *map)
+void	repos_xy(t_map *map, t_mappoint **array)
 {
 	int		i;
 	int		j;
@@ -80,14 +96,16 @@ void	repos_xy(t_map *map)
 	// double	z_pos;
 
 	// z_range = map->range.z_max - map->range.z_min;
+	map_range(map, array);
+	pos_set(map);
 	i = 0;
 	while (i < map->row)
 	{
 		j = 0;
 		while (j < map->col)
 		{
-			map->array[i][j].x += map->pos.x;
-			map->array[i][j].y += map->pos.y;
+			array[i][j].x += map->pos.x;
+			array[i][j].y += map->pos.y;
 			// z_pos = (double)(map->array[i][j].z - map->range.z_min) \
 			// 		/ (double)z_range;
 			// map->array[i][j].color = (int)((1 - z_pos) * map->range.color_min + \

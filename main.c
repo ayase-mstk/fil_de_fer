@@ -1,6 +1,6 @@
 #include "fdf.h"
 
-void	init_map(t_map *map)
+void	init_mlx(t_map *map)
 {
 	map->data = (t_data *)malloc(sizeof(t_data));
 	if (map->data == NULL)
@@ -8,26 +8,31 @@ void	init_map(t_map *map)
 	map->img = (t_img *)malloc(sizeof(t_img));
 	if (map->img == NULL)
 		exit(1);
-	map->range.x_max = INT_MIN;
-	map->range.y_max = INT_MIN;
-	map->range.z_max = INT_MIN;
-	map->range.color_max = INT_MIN;
-	map->range.x_min = INT_MAX;
-	map->range.y_min = INT_MAX;
-	map->range.z_min = INT_MAX;
-	map->range.color_min = INT_MAX;
-	map->scale = 0;
+	map->data->mlx_ptr = mlx_init();
+	map->data->win_ptr = mlx_new_window(map->data->mlx_ptr, WIDTH, HEIGHT, "mlx 42");
+	map->img->img = mlx_new_image(map->data->mlx_ptr, WIDTH, HEIGHT);
+	map->img->addr = mlx_get_data_addr(map->img->img, \
+										&map->img->bits_per_pixel, \
+										&map->img->line_length, \
+										&map->img->endian);
+}
+
+t_map	*init_map(void)
+{
+	t_map	*map;
+
+	map = (t_map *)malloc(sizeof(t_map));
+	if (map == NULL)
+		exit(1);
+	map->data = NULL;
+	map->img = NULL;
 	map->zoom = 0;
 	map->row = 0;
 	map->col = 0;
 	map->array = NULL;
-	map->data->mlx_ptr = NULL;
-	map->data->win_ptr = NULL;
-	map->img->img = NULL;
-	map->img->addr = NULL;
-	map->img->bits_per_pixel = 0;
-	map->img->line_length = 0;
-	map->img->endian = 0;
+	map->para = NULL;
+	map->iso = NULL;
+	return (map);
 }
 
 int	main(int ac, char **av)
@@ -36,12 +41,13 @@ int	main(int ac, char **av)
 
 	if (ac != 2)
 		put_errormessage("Invalid number of arguments\n");
-	map = (t_map *)malloc(sizeof(t_map));
-	if (map == NULL)
-		exit(1);
-	init_map(map);
+	map = init_map();
 	read_map(map, av[1]);
-	ft_isometric_projection(map);
-	ft_mlx(map);
+	scale_points(map);
+	// parallel ok
+	init_mlx(map);
+	draw_iso(map);
+	set_hooks(map);
+	mlx_loop(map->data->mlx_ptr);
 	return (0);
 }

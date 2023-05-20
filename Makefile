@@ -8,6 +8,7 @@ SRCS = 	main.c \
 		position.c \
 		transform.c \
 		draw.c \
+		switch.c \
 		color.c \
 		mlx.c \
 		error.c \

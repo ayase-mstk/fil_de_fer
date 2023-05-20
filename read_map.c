@@ -52,7 +52,6 @@ void	store_map(t_map *map, char **strarr, int row)
 		map->array[row][col].x = row;
 		map->array[row][col].y = col;
 		set_z(&map->array[row][col], strarr[col]);
-		map_range(map, row, col, map->array[row][col].z);
 		col++;
 	}
 }
@@ -80,8 +79,6 @@ void	split_map(t_map *map, char *lines[])
 		free_strarr(strarr);
 		i++;
 	}
-	set_scale(map);
-	scale_points(map);
 }
 
 void	read_map(t_map *map, char *map_name)
