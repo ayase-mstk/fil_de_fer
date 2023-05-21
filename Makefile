@@ -2,7 +2,8 @@ NAME = fdf
 
 SRCS = 	main.c \
 		utils.c \
-		lst_print.c \
+		utils2.c \
+		init.c \
 		free.c \
 		read_map.c \
 		position.c \
@@ -11,6 +12,7 @@ SRCS = 	main.c \
 		switch.c \
 		color.c \
 		mlx.c \
+		bonus_hook.c \
 		error.c \
 		gnl/get_next_line.c \
 		gnl/get_next_line_utils.c

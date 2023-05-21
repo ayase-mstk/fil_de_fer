@@ -24,7 +24,7 @@ void	ft_isometric_projection(t_map *map)
 	}
 }
 
-void	ft_rotation_x(t_map *map, double theeta)
+void	ft_rotation_x(t_map *map, t_mappoint **array, double theeta)
 {
 	int		i;
 	int		j;
@@ -37,11 +37,11 @@ void	ft_rotation_x(t_map *map, double theeta)
 		j = 0;
 		while (j < map->col)
 		{
-			tmp_y = map->array[i][j].y;
-			tmp_z = map->array[i][j].z;
-			map->array[i][j].y = tmp_y * cos(theeta * M_PI / 180.0) \
+			tmp_y = array[i][j].y;
+			tmp_z = array[i][j].z;
+			array[i][j].y = tmp_y * cos(theeta * M_PI / 180.0) \
 									+ tmp_z * sin(theeta * M_PI / 180.0);
-			map->array[i][j].z = -tmp_y * sin(theeta * M_PI / 180.0) \
+			array[i][j].z = -tmp_y * sin(theeta * M_PI / 180.0) \
 									+ tmp_z * cos(theeta * M_PI / 180.0);
 			j++;
 		}
@@ -49,7 +49,7 @@ void	ft_rotation_x(t_map *map, double theeta)
 	}
 }
 
-void	ft_rotation_y(t_map *map, double theeta)
+void	ft_rotation_y(t_map *map, t_mappoint **array, double theeta)
 {
 	int		i;
 	int		j;
@@ -62,11 +62,11 @@ void	ft_rotation_y(t_map *map, double theeta)
 		j = 0;
 		while (j < map->col)
 		{
-			tmp_x = map->array[i][j].x;
-			tmp_z = map->array[i][j].z;
-			map->array[i][j].x = tmp_x * cos(theeta * M_PI / 180.0) \
+			tmp_x = array[i][j].x;
+			tmp_z = array[i][j].z;
+			array[i][j].x = tmp_x * cos(theeta * M_PI / 180.0) \
 									+ tmp_z * sin(theeta * M_PI / 180.0);
-			map->array[i][j].z = -tmp_x * sin(theeta * M_PI / 180.0) \
+			array[i][j].z = -tmp_x * sin(theeta * M_PI / 180.0) \
 									+ tmp_z * cos(theeta * M_PI / 180.0);
 			j++;
 		}
@@ -74,7 +74,7 @@ void	ft_rotation_y(t_map *map, double theeta)
 	}
 }
 
-void	ft_rotation_z(t_map *map, double theeta)
+void	ft_rotation_z(t_map *map, t_mappoint **array, double theeta)
 {
 	int		i;
 	int		j;
@@ -87,11 +87,11 @@ void	ft_rotation_z(t_map *map, double theeta)
 		j = 0;
 		while (j < map->col)
 		{
-			tmp_x = map->array[i][j].x;
-			tmp_y = map->array[i][j].y;
-			map->array[i][j].x = tmp_x * cos(theeta * M_PI / 180.0) \
+			tmp_x = array[i][j].x;
+			tmp_y = array[i][j].y;
+			array[i][j].x = tmp_x * cos(theeta * M_PI / 180.0) \
 										- tmp_y * sin(theeta * M_PI / 180.0);
-			map->array[i][j].y = tmp_x * sin(theeta * M_PI / 180.0) \
+			array[i][j].y = tmp_x * sin(theeta * M_PI / 180.0) \
 										+ tmp_y * cos(theeta * M_PI / 180.0);
 			j++;
 		}

@@ -24,7 +24,7 @@ void	set_z(t_mappoint *point, char *strarr)
 	}
 	else
 	{
-		point->color = INDIGO;
+		point->color = 0xFFFFFF;
 		point->z = ft_atoi(strarr);
 	}
 }
@@ -38,13 +38,13 @@ void	store_map(t_map *map, char **strarr, int row)
 		col++;
 	map->array[row] = (t_mappoint *)malloc(sizeof(t_mappoint) * (col + 1));
 	if (map->array[row] == NULL)
-		maparray_and_strarr_free(map, strarr);
+		maparray_and_strarr_free(map, strarr, row);
 	if (map->col == 0)
 		map->col = col;
 	if (map->col != col)
 	{
 		ft_putstr_fd("Invalid map(widths are not same)\n", 2);
-		maparray_and_strarr_free(map, strarr);
+		maparray_and_strarr_free(map, strarr, row);
 	}
 	col = 0;
 	while (strarr[col])
@@ -76,7 +76,7 @@ void	split_map(t_map *map, char *lines[])
 		strarr = ft_split(lines[i], ' ');
 		free(lines[i]);
 		store_map(map, strarr, i);
-		free_strarr(strarr);
+		free_strarr(strarr, i);
 		i++;
 	}
 }

@@ -1,17 +1,5 @@
 #include "fdf.h"
 
-void	init_range(t_range *range)
-{
-	range->x_max = INT_MIN;
-	range->y_max = INT_MIN;
-	range->z_max = INT_MIN;
-	range->color_max = INT_MIN;
-	range->x_min = INT_MAX;
-	range->y_min = INT_MAX;
-	range->z_min = INT_MAX;
-	range->color_min = INT_MAX;
-}
-
 void	map_range(t_map *map, t_mappoint **array)
 {
 	int	i;
@@ -30,8 +18,10 @@ void	map_range(t_map *map, t_mappoint **array)
 			map->range.y_max = ft_max(map->range.y_max, array[i][j].y);
 			map->range.z_min = ft_min(map->range.z_min, array[i][j].z);
 			map->range.z_max = ft_max(map->range.z_max, array[i][j].z);
-			map->range.color_min = ft_min(map->range.color_min, array[i][j].color);
-			map->range.color_max = ft_max(map->range.color_max, array[i][j].color);
+			map->range.color_min = \
+						ft_min(map->range.color_min, array[i][j].color);
+			map->range.color_max = \
+						ft_max(map->range.color_max, array[i][j].color);
 			j++;
 		}
 		i++;
@@ -60,6 +50,8 @@ void	scale_points(t_map *map)
 
 	map_range(map, map->array);
 	set_scale(map);
+	if ((int)map->scale == 0)
+		return ;
 	i = 0;
 	while (i < map->row)
 	{
@@ -69,12 +61,6 @@ void	scale_points(t_map *map)
 			map->array[i][j].x *= (int)map->scale;
 			map->array[i][j].y *= (int)map->scale;
 			map->array[i][j].z *= (int)map->scale;
-			// map->array[i][j].x = (int)((double)map->array[i][j].x \
-			// 						* map->scale);
-			// map->array[i][j].y = (int)((double)map->array[i][j].y \
-			// 						* map->scale);
-			// map->array[i][j].z = (int)((double)map->array[i][j].z \
-			// 						* map->scale);
 			j++;
 		}
 		i++;
@@ -86,7 +72,6 @@ void	pos_set(t_map *map)
 	map->pos.x = (WIDTH / 2) - (map->range.x_max + map->range.x_min) / 2;
 	map->pos.y = (HEIGHT / 2) - (map->range.y_max + map->range.y_min) / 2;
 }
-
 
 void	repos_xy(t_map *map, t_mappoint **array)
 {

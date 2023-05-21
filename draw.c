@@ -1,7 +1,5 @@
 #include "fdf.h"
 
-int ok = 0;
-
 static void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
 {
 	char	*dst;
@@ -12,49 +10,84 @@ static void	my_mlx_pixel_put(t_img *img, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-static int	ft_slope(double a, double b)
+static void	set_variables(t_mappoint pre, t_mappoint next, t_bresenham *vars)
 {
-	if (a < b)
-		return (1);
+	vars->extent.x = ft_abs(next.x - pre.x);
+	vars->extent.y = ft_abs(next.y - pre.y);
+	vars->slope.x = ft_slope(pre.x, next.x);
+	vars->slope.y = ft_slope(pre.y, next.y);
+	vars->error = 0;
+	if (vars->extent.x > vars->extent.y)
+		vars->delta = (double)vars->extent.y / (double)vars->extent.x;
 	else
-		return (-1);
+		vars->delta = (double)vars->extent.x / (double)vars->extent.y;
 }
 
-static void	draw_line(t_mappoint pre, t_mappoint next, t_img *img)
+static void	bresenham_util(int *now, int slope, double *error, double delta)
+{
+	*error += delta;
+	if (*error >= 0.5)
+	{
+		*now += slope;
+		*error -= 1.0;
+	}
+}
+
+// int	color_bresenham(t_mappoint pre, t_mappoint now, t_mappoint next, t_point extent)
+// {
+// 	double	color_delta;
+// 	double	color_slope;
+// 	double	now_color;
+
+// 	if (pre.color == next.color)
+// 		return (pre.color);
+// 	now_color = pre.color;
+// 	color_slope = ft_slope(pre.color, next.color);
+// 	if (extent.x > extent.y)
+// 	{
+// 		color_delta = (double)ft_abs(next.color - pre.color) \
+// 					/ (double)extent.x;
+// 		while (now.x++ != next.x)
+// 			now_color += color_delta * color_slope;
+// 	}
+// 	else
+// 	{
+// 		color_delta = (double)ft_abs(next.color - pre.color) \
+// 					/ (double)extent.y;
+// 		while (now.y++ != next.y)
+// 			now_color += color_delta * color_slope;
+// 	}
+// 	return ((int)now_color);
+// }
+
+static void	draw_bresenham(t_mappoint pre, t_mappoint next, t_map *map)
 {
 	t_mappoint	now;
-	t_point		delta;
-	t_point		slope;
-	int			err;
+	t_bresenham	vars;
 
-	delta.x = ft_abs(next.x - pre.x);
-	delta.y = ft_abs(next.y - pre.y);
-	slope.x = ft_slope(pre.x, next.x);
-	slope.y = ft_slope(pre.y, next.y);
-	err = delta.x - delta.y;
+	set_variables(pre, next, &vars);
 	now = pre;
-	while (now.x != next.x && now.y != next.y)
+	if (vars.extent.x > vars.extent.y)
 	{
-		my_mlx_pixel_put(img, now.x, now.y, now_color(pre, now, next, delta));
-		if (err * 2 > -delta.y)
+		while (now.x != next.x)
 		{
-			err -= delta.y;
-			now.x += slope.x;
+			my_mlx_pixel_put(map->img, now.x, now.y, \
+							now_color(pre, now, next, map));
+			now.x += vars.slope.x;
+			bresenham_util(&now.y, vars.slope.y, &vars.error, vars.delta);
 		}
-		if (err * 2 < delta.x)
+	}
+	else
+	{
+		while (now.y != next.y)
 		{
-			err += delta.x;
-			now.y += slope.y;
+			my_mlx_pixel_put(map->img, now.x, now.y, \
+							now_color(pre, now, next, map));
+			now.y += vars.slope.y;
+			bresenham_util(&now.x, vars.slope.x, &vars.error, vars.delta);
 		}
 	}
 }
-//errは、x軸方向の誤差を表しています。
-//err * 2 > -delta.yは、x軸方向の誤差が-y軸方向の距離より大きい場合を表しています。
-//err * 2 < delta.xは、x軸方向の誤差がx軸方向の距離より小さい場合を表しています。
-//err -= delta.yは、x軸方向の誤差から-y軸方向の距離を引いた値をx軸方向の誤差に代入することを表しています。
-//now.vx += slope.xは、現在の座標のx軸方向に傾きを足した値を現在の座標のx軸方向に代入することを表しています。
-//err += delta.xは、x軸方向の誤差にx軸方向の距離を足した値をx軸方向の誤差に代入することを表しています。
-//now.vy += slope.yは、現在の座標のy軸方向に傾きを足した値を現在の座標のy軸方向に代入することを表しています。
 
 void	draw_image(t_map *map, t_mappoint **array)
 {
@@ -67,11 +100,10 @@ void	draw_image(t_map *map, t_mappoint **array)
 		j = 0;
 		while (j < map->col)
 		{
-			// printf("%d\n", ok++);
 			if (j != map->col - 1)
-				draw_line(array[i][j], array[i][j + 1], map->img);
+				draw_bresenham(array[i][j], array[i][j + 1], map);
 			if (i != map->row - 1)
-				draw_line(array[i][j], array[i + 1][j], map->img);
+				draw_bresenham(array[i][j], array[i + 1][j], map);
 			j++;
 		}
 		i++;

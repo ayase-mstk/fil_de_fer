@@ -27,6 +27,12 @@
 # define WIDTH	1920
 # define INDIGO 0x4b0082
 
+typedef enum e_color
+{
+	GRADATION,
+	NORMAL
+}	t_color;
+
 typedef struct s_img
 {
 	void	*img;
@@ -66,6 +72,14 @@ typedef struct s_point
 	int	y;
 }	t_point;
 
+typedef struct s_bresenham
+{
+	t_point	extent;
+	t_point	slope;
+	double	error;
+	double	delta;
+}	t_bresenham;
+
 typedef struct s_mappoint
 {
 	int	x;
@@ -82,7 +96,10 @@ typedef struct s_map
 	int			row;
 	int			col;
 	double		scale;
-	int			zoom;
+	double		zoom;
+	int			move_x;
+	int			move_y;
+	t_color		color_mode;
 	t_range		range;
 	t_pos		pos;
 	t_data		*data;
@@ -93,17 +110,23 @@ void			lst_print(t_map *map, t_mappoint **array);
 int				ft_max(int a, int b);
 int				ft_min(int a, int b);
 int				ft_abs(int n);
+int				ft_slope(double a, double b);
 int				ft_atoi_base(char *str, char *base1, char *base2);
 void			put_errormessage(char *str);
-void			free_strarr(char **strarr);
-void			free_map(t_map *map);
-void			maparray_and_strarr_free(t_map *map, char **strarr);
+t_map			*init_map(void);
+void			init_mlx(t_map *map);
+void			init_range(t_range *range);
+void			malloc_iso(t_map *map);
+void			init_iso(t_map *map);
+void			free_strarr(char **strarr, int size);
+void			free_map(t_map *map, int size);
+void			maparray_and_strarr_free(t_map *map, char **strarr, int size);
 void			read_map(t_map *map, char *map_name);
 void			split_map(t_map *map, char *lines[]);
 void			store_map(t_map *map, char **strarr, int row);
-void			ft_rotation_x(t_map *map, double theeta);
-void			ft_rotation_y(t_map *map, double theeta);
-void			ft_rotation_z(t_map *map, double theeta);
+void			ft_rotation_x(t_map *map, t_mappoint **array, double theeta);
+void			ft_rotation_y(t_map *map, t_mappoint **array, double theeta);
+void			ft_rotation_z(t_map *map, t_mappoint **array, double theeta);
 void			ft_isometric_projection(t_map *map);
 void			map_range(t_map *map, t_mappoint **array);
 void			set_scale(t_map *map);
@@ -114,9 +137,10 @@ void			draw_image(t_map *map, t_mappoint **array);
 void			draw_iso(t_map *map);
 void			draw_para(t_map *map);
 int				now_color(t_mappoint pre, t_mappoint now, \
-							t_mappoint next, t_point delta);
-// void			ft_mlx(t_map *map);
+							t_mappoint next, t_map *map);
 void			set_hooks(t_map *map);
+void			ft_zoom(int button, t_map *map);
+void			ft_move(int key, t_map *map);
 int				main(int ac, char **av);
 
 #endif
