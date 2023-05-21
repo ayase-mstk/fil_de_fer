@@ -11,9 +11,20 @@ int	close_window(t_map *map)
 	exit(0);
 }
 
+void	set_axis(int keycode, t_map *map)
+{
+	if (keycode == XK_x)
+		map->axis = X;
+	else if (keycode == XK_y)
+		map->axis = Y;
+	else if (keycode == XK_z)
+		map->axis = Z;
+}
+
 int	deal_key(int keycode, t_map *map)
 {
 	// printf("XK_Escape : %d\n", KEY_ESCAPE);
+	// printf("keycode : %x\n", keycode);
 	if (keycode == XK_Escape)
 	{
 		mlx_destroy_image(map->data->mlx_ptr, map->img->img);
@@ -35,6 +46,10 @@ int	deal_key(int keycode, t_map *map)
 	else if (keycode == XK_Left || keycode == XK_Up \
 			|| keycode == XK_Right || keycode == XK_Down)
 		ft_move(keycode, map);
+	else if (keycode == XK_x || keycode == XK_y || keycode == XK_z)
+		set_axis(keycode, map);
+	// else if (keycode == XK_comma || keycode == XK_period)
+	// 	ft_rotate(keycode, map);
 	return (0);
 }
 

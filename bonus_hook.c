@@ -78,3 +78,45 @@ void	ft_move(int keycode, t_map *map)
 	mlx_put_image_to_window(map->data->mlx_ptr, map->data->win_ptr, \
 							map->img->img, 0, 0);
 }
+
+void	ft_rotation(t_map *map, t_mappoint **array)
+{
+	if (map->axis == X)
+		ft_rotation_x(map, array, map->theeta_x);
+	else if (map->axis == Y)
+		ft_rotation_y(map, array, map->theeta_y);
+	else if (map->axis == Z)
+		ft_rotation_z(map, array, map->theeta_z);
+}
+
+void	ft_rotate(int keycode, t_map *map)
+{
+	if (keycode == XK_comma)
+	{
+		if (map->axis == X)
+			map->theeta_x -= 0.1;
+		else if (map->axis == Y)
+			map->theeta_y -= 0.1;
+		else if (map->axis == Z)
+			map->theeta_z -= 0.1;
+	}
+	else if (keycode == XK_period)
+	{
+		if (map->axis == X)
+			map->theeta_x += 0.1;
+		else if (map->axis == Y)
+			map->theeta_y += 0.1;
+		else if (map->axis == Z)
+			map->theeta_z += 0.1;
+	}
+	ft_bzero(map->img->addr, WIDTH * HEIGHT * (map->img->bits_per_pixel / 8));
+	init_iso(map);
+	ft_isometric_projection(map);
+	ft_rotation(map, map->iso);
+	zoom_points(map, map->iso);
+	repos_xy(map, map->iso);
+	move_points(map, map->iso);
+	draw_image(map, map->iso);
+	mlx_put_image_to_window(map->data->mlx_ptr, map->data->win_ptr, \
+							map->img->img, 0, 0);
+}

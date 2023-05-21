@@ -36,6 +36,10 @@ t_map	*init_map(void)
 	map->para = NULL;
 	map->iso = NULL;
 	map->color_mode = NORMAL;
+	map->axis = Z;
+	map->theeta_x = 0.0;
+	map->theeta_y = 0.0;
+	map->theeta_z = 0.0;
 	return (map);
 }
 

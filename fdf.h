@@ -33,6 +33,13 @@ typedef enum e_color
 	NORMAL
 }	t_color;
 
+typedef enum e_axis
+{
+	X,
+	Y,
+	Z
+}	t_axis;
+
 typedef struct s_img
 {
 	void	*img;
@@ -99,6 +106,10 @@ typedef struct s_map
 	double		zoom;
 	int			move_x;
 	int			move_y;
+	t_axis		axis;
+	double		theeta_x;
+	double		theeta_y;
+	double		theeta_z;
 	t_color		color_mode;
 	t_range		range;
 	t_pos		pos;
