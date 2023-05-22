@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   read_map.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: masa <masa@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/22 16:02:25 by mahayase          #+#    #+#             */
+/*   Updated: 2023/05/22 19:00:45 by masa             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
 char	*color_is_designated(char *strarr)
@@ -68,7 +80,11 @@ void	split_map(t_map *map, char *lines[])
 		row++;
 	map->array = (t_mappoint **)malloc(sizeof(t_mappoint *) * (row + 1));
 	if (map->array == NULL)
-		exit(1);
+	{
+		free_lines(lines, row);
+		free(map);
+		put_errormessage("malloc error\n");
+	}
 	map->array[row] = NULL;
 	map->row = row;
 	while (i < row)
@@ -76,7 +92,7 @@ void	split_map(t_map *map, char *lines[])
 		strarr = ft_split(lines[i], ' ');
 		free(lines[i]);
 		store_map(map, strarr, i);
-		free_strarr(strarr, i);
+		free_strarr(strarr);
 		i++;
 	}
 }
@@ -89,6 +105,8 @@ void	read_map(t_map *map, char *map_name)
 
 	i = 0;
 	fd = open(map_name, O_RDONLY);
+	if (fd == -1)
+		put_errormessage("Invalid map\n");
 	while (1)
 	{
 		lines[i] = get_next_line(fd);
@@ -97,15 +115,5 @@ void	read_map(t_map *map, char *map_name)
 		i++;
 	}
 	close(fd);
-	map->col = 0;
-	map->row = 0;
-	map->range.x_max = 0;
-	map->range.x_min = 0;
-	map->range.y_max = 0;
-	map->range.y_min = 0;
-	map->range.z_max = 0;
-	map->range.z_min = 0;
-	map->range.color_max = 0x000000;
-	map->range.color_min = 0xFFFFFF;
 	split_map(map, lines);
 }

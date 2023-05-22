@@ -1,4 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils2.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: masa <masa@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/22 16:02:46 by mahayase          #+#    #+#             */
+/*   Updated: 2023/05/22 19:02:31 by masa             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
+
+void	maparray_and_strarr_free(t_map *map, char **strarr, int size)
+{
+	free_map(map, size);
+	free_strarr(strarr);
+	exit(1);
+}
 
 void	set_axis(int keycode, t_map *map)
 {

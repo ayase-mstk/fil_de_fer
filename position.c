@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   position.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mahayase <mahayase@student.42.jp>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/22 16:02:09 by mahayase          #+#    #+#             */
+/*   Updated: 2023/05/22 16:02:12 by mahayase         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
 void	map_range(t_map *map, t_mappoint **array)
@@ -18,10 +30,6 @@ void	map_range(t_map *map, t_mappoint **array)
 			map->range.y_max = ft_max(map->range.y_max, array[i][j].y);
 			map->range.z_min = ft_min(map->range.z_min, array[i][j].z);
 			map->range.z_max = ft_max(map->range.z_max, array[i][j].z);
-			map->range.color_min = \
-						ft_min(map->range.color_min, array[i][j].color);
-			map->range.color_max = \
-						ft_max(map->range.color_max, array[i][j].color);
 			j++;
 		}
 		i++;

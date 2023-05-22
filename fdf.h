@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fdf.h                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: masa <masa@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/22 16:01:20 by mahayase          #+#    #+#             */
+/*   Updated: 2023/05/22 19:02:56 by masa             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef FDF_H
 # define FDF_H
 
@@ -16,7 +28,6 @@
 # include "gnl/get_next_line.h"
 # include "mlx.h"
 # include "X11/keysym.h"
-// # include "keymap.h"
 
 # ifndef M_PI
 #  define M_PI 3.14159265358979323846
@@ -26,7 +37,6 @@
 # define HEIGHT	1080
 # define WIDTH	1920
 # define INDIGO 0x4b0082
-# define BABYPINK 0xffb6c1
 # define ROSEMIST 0xffe4e1
 
 typedef enum e_color
@@ -61,12 +71,10 @@ typedef struct s_range
 {
 	int	x_max;
 	int	y_max;
-	int	z_max;
-	int	color_max;
 	int	x_min;
 	int	y_min;
+	int	z_max;
 	int	z_min;
-	int	color_min;
 }	t_range;
 
 typedef struct s_pos
@@ -131,7 +139,8 @@ void			init_mlx(t_map *map);
 void			init_range(t_range *range);
 void			malloc_iso(t_map *map);
 void			init_iso(t_map *map);
-void			free_strarr(char **strarr, int size);
+void			free_strarr(char **strarr);
+void			free_lines(char **lines, int size);
 void			free_map(t_map *map, int size);
 void			free_iso(t_map *map, int size);
 void			free_para(t_map *map, int size);

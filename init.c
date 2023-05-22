@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mahayase <mahayase@student.42.jp>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/22 16:01:51 by mahayase          #+#    #+#             */
+/*   Updated: 2023/05/22 16:01:53 by mahayase         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
 void	init_mlx(t_map *map)
@@ -6,13 +18,13 @@ void	init_mlx(t_map *map)
 	if (map->data == NULL)
 	{
 		free_map(map, map->row);
-		exit(1);
+		put_errormessage("Malloc error\n");
 	}
 	map->img = (t_img *)malloc(sizeof(t_img));
 	if (map->img == NULL)
 	{
 		free_map(map, map->row);
-		exit(1);
+		put_errormessage("Malloc error\n");
 	}
 	map->data->mlx_ptr = mlx_init();
 	map->data->win_ptr = mlx_new_window(map->data->mlx_ptr, \
@@ -30,7 +42,7 @@ t_map	*init_map(void)
 
 	map = (t_map *)malloc(sizeof(t_map));
 	if (map == NULL)
-		exit(1);
+		put_errormessage("Malloc error\n");
 	map->data = NULL;
 	map->img = NULL;
 	map->zoom = 1.0;
@@ -53,12 +65,10 @@ void	init_range(t_range *range)
 {
 	range->x_max = INT_MIN;
 	range->y_max = INT_MIN;
-	range->z_max = INT_MIN;
-	range->color_max = INT_MIN;
 	range->x_min = INT_MAX;
 	range->y_min = INT_MAX;
+	range->z_max = INT_MIN;
 	range->z_min = INT_MAX;
-	range->color_min = INT_MAX;
 }
 
 void	malloc_iso(t_map *map)
@@ -69,7 +79,7 @@ void	malloc_iso(t_map *map)
 	if (map->iso == NULL)
 	{
 		free_map(map, map->row);
-		exit(1);
+		put_errormessage("Malloc error\n");
 	}
 	i = 0;
 	while (i < map->row)
@@ -79,7 +89,7 @@ void	malloc_iso(t_map *map)
 		{
 			free_iso(map, i);
 			free_map(map, map->row);
-			exit(1);
+			put_errormessage("Malloc error\n");
 		}
 		i++;
 	}

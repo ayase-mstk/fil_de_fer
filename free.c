@@ -1,15 +1,41 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: masa <masa@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/22 16:01:35 by mahayase          #+#    #+#             */
+/*   Updated: 2023/05/22 19:01:09 by masa             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
-void	free_strarr(char **strarr, int size)
+void	free_lines(char **lines, int size)
 {
 	int	i;
 
 	i = size - 1;
 	while (i >= 0)
 	{
+		free(lines[i]);
+		lines[i] = NULL;
+		i--;
+	}
+	lines = NULL;
+}
+
+void	free_strarr(char **strarr)
+{
+	int	i;
+
+	i = 0;
+	while (strarr[i])
+	{
 		free(strarr[i]);
 		strarr[i] = NULL;
-		i--;
+		i++;
 	}
 	free(strarr);
 	strarr = NULL;
@@ -76,11 +102,4 @@ void	free_map(t_map *map, int size)
 	if (map)
 		free(map);
 	map = NULL;
-}
-
-void	maparray_and_strarr_free(t_map *map, char **strarr, int size)
-{
-	free_map(map, size);
-	free_strarr(strarr, size);
-	exit(1);
 }
