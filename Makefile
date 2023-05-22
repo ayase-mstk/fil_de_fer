@@ -11,8 +11,8 @@ SRCS = 	main.c \
 		draw.c \
 		switch.c \
 		color.c \
-		mlx.c \
-		bonus_hook.c \
+		hooks.c \
+		bonus_hooks.c \
 		error.c \
 		gnl/get_next_line.c \
 		gnl/get_next_line_utils.c

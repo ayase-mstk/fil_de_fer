@@ -77,10 +77,7 @@ void	repos_xy(t_map *map, t_mappoint **array)
 {
 	int		i;
 	int		j;
-	// int		z_range;
-	// double	z_pos;
 
-	// z_range = map->range.z_max - map->range.z_min;
 	map_range(map, array);
 	pos_set(map);
 	i = 0;
@@ -91,10 +88,6 @@ void	repos_xy(t_map *map, t_mappoint **array)
 		{
 			array[i][j].x += map->pos.x;
 			array[i][j].y += map->pos.y;
-			// z_pos = (double)(map->array[i][j].z - map->range.z_min) \
-			// 		/ (double)z_range;
-			// map->array[i][j].color = (int)((1 - z_pos) * map->range.color_min + \
-			// 								z_pos * map->range.color_max);
 			j++;
 		}
 		i++;

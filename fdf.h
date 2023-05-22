@@ -26,6 +26,8 @@
 # define HEIGHT	1080
 # define WIDTH	1920
 # define INDIGO 0x4b0082
+# define BABYPINK 0xffb6c1
+# define ROSEMIST 0xffe4e1
 
 typedef enum e_color
 {
@@ -131,13 +133,12 @@ void			malloc_iso(t_map *map);
 void			init_iso(t_map *map);
 void			free_strarr(char **strarr, int size);
 void			free_map(t_map *map, int size);
+void			free_iso(t_map *map, int size);
+void			free_para(t_map *map, int size);
 void			maparray_and_strarr_free(t_map *map, char **strarr, int size);
 void			read_map(t_map *map, char *map_name);
 void			split_map(t_map *map, char *lines[]);
 void			store_map(t_map *map, char **strarr, int row);
-void			ft_rotation_x(t_map *map, t_mappoint **array, double theeta);
-void			ft_rotation_y(t_map *map, t_mappoint **array, double theeta);
-void			ft_rotation_z(t_map *map, t_mappoint **array, double theeta);
 void			ft_isometric_projection(t_map *map);
 void			map_range(t_map *map, t_mappoint **array);
 void			set_scale(t_map *map);
@@ -151,7 +152,15 @@ int				now_color(t_mappoint pre, t_mappoint now, \
 							t_mappoint next, t_map *map);
 void			set_hooks(t_map *map);
 void			ft_zoom(int button, t_map *map);
+void			zoom_points(t_map *map, t_mappoint **array);
 void			ft_move(int key, t_map *map);
+void			move_points(t_map *map, t_mappoint **array);
+void			ft_rotate(int keycode, t_map *map);
+void			ft_rotation(t_map *map, t_mappoint **array);
+void			set_axis(int keycode, t_map *map);
+void			ft_rotation_x(t_map *map, t_mappoint **array, double theeta);
+void			ft_rotation_y(t_map *map, t_mappoint **array, double theeta);
+void			ft_rotation_z(t_map *map, t_mappoint **array, double theeta);
 int				main(int ac, char **av);
 
 #endif

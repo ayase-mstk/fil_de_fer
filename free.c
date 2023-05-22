@@ -15,7 +15,7 @@ void	free_strarr(char **strarr, int size)
 	strarr = NULL;
 }
 
-static	void	free_iso(t_map *map, int size)
+void	free_iso(t_map *map, int size)
 {
 	int	i;
 
@@ -33,7 +33,7 @@ static	void	free_iso(t_map *map, int size)
 	map->iso = NULL;
 }
 
-static	void	free_para(t_map *map, int size)
+void	free_para(t_map *map, int size)
 {
 	int	i;
 
@@ -67,6 +67,12 @@ void	free_map(t_map *map, int size)
 	map->array = NULL;
 	free_iso(map, map->row);
 	free_para(map, map->row);
+	if (map->data)
+		free(map->data);
+	map->data = NULL;
+	if (map->img)
+		free(map->img);
+	map->img = NULL;
 	if (map)
 		free(map);
 	map = NULL;

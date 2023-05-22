@@ -3,12 +3,12 @@
 void	draw_iso(t_map *map)
 {
 	ft_bzero(map->img->addr, WIDTH * HEIGHT * (map->img->bits_per_pixel / 8));
-	if (map->iso == NULL)
-	{
-		init_iso(map);
-	}
+	init_iso(map);
 	ft_isometric_projection(map);
+	ft_rotation(map, map->iso);
+	zoom_points(map, map->iso);
 	repos_xy(map, map->iso);
+	move_points(map, map->iso);
 	draw_image(map, map->iso);
 	mlx_put_image_to_window(map->data->mlx_ptr, map->data->win_ptr, \
 							map->img->img, 0, 0);
@@ -20,13 +20,20 @@ static void	malloc_para(t_map *map)
 
 	map->para = (t_mappoint **)malloc(sizeof(t_mappoint *) * map->row);
 	if (map->para == NULL)
+	{
+		free_map(map, map->row);
 		exit(1);
+	}
 	i = 0;
 	while (i < map->row)
 	{
 		map->para[i] = (t_mappoint *)malloc(sizeof(t_mappoint) * map->col);
 		if (map->para[i] == NULL)
+		{
+			free_para(map, i);
+			free_map(map, map->row);
 			exit(1);
+		}
 		i++;
 	}
 }

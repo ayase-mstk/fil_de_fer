@@ -4,10 +4,16 @@ void	init_mlx(t_map *map)
 {
 	map->data = (t_data *)malloc(sizeof(t_data));
 	if (map->data == NULL)
+	{
+		free_map(map, map->row);
 		exit(1);
+	}
 	map->img = (t_img *)malloc(sizeof(t_img));
 	if (map->img == NULL)
+	{
+		free_map(map, map->row);
 		exit(1);
+	}
 	map->data->mlx_ptr = mlx_init();
 	map->data->win_ptr = mlx_new_window(map->data->mlx_ptr, \
 										WIDTH, HEIGHT, "mlx 42");
@@ -61,13 +67,20 @@ void	malloc_iso(t_map *map)
 
 	map->iso = (t_mappoint **)malloc(sizeof(t_mappoint *) * map->row);
 	if (map->iso == NULL)
+	{
+		free_map(map, map->row);
 		exit(1);
+	}
 	i = 0;
 	while (i < map->row)
 	{
 		map->iso[i] = (t_mappoint *)malloc(sizeof(t_mappoint) * map->col);
 		if (map->iso[i] == NULL)
+		{
+			free_iso(map, i);
+			free_map(map, map->row);
 			exit(1);
+		}
 		i++;
 	}
 }

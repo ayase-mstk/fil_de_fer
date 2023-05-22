@@ -1,5 +1,15 @@
 #include "fdf.h"
 
+void	set_axis(int keycode, t_map *map)
+{
+	if (keycode == XK_x)
+		map->axis = X;
+	else if (keycode == XK_y)
+		map->axis = Y;
+	else if (keycode == XK_z)
+		map->axis = Z;
+}
+
 static	unsigned int	ft_check_num(char c, char *base1, char *base2)
 {
 	int	i;

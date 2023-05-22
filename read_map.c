@@ -24,7 +24,7 @@ void	set_z(t_mappoint *point, char *strarr)
 	}
 	else
 	{
-		point->color = 0xFFFFFF;
+		point->color = ROSEMIST;
 		point->z = ft_atoi(strarr);
 	}
 }

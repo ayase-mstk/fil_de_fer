@@ -99,6 +99,13 @@ void	ft_rotation_z(t_map *map, t_mappoint **array, double theeta)
 	}
 }
 
+void	ft_rotation(t_map *map, t_mappoint **array)
+{
+	ft_rotation_x(map, array, map->theeta_x);
+	ft_rotation_y(map, array, map->theeta_y);
+	ft_rotation_z(map, array, map->theeta_z);
+}
+
 // rotation matrix
 
 // Rx(θ) = [1  0      0   ]

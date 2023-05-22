@@ -33,33 +33,6 @@ static void	bresenham_util(int *now, int slope, double *error, double delta)
 	}
 }
 
-// int	color_bresenham(t_mappoint pre, t_mappoint now, t_mappoint next, t_point extent)
-// {
-// 	double	color_delta;
-// 	double	color_slope;
-// 	double	now_color;
-
-// 	if (pre.color == next.color)
-// 		return (pre.color);
-// 	now_color = pre.color;
-// 	color_slope = ft_slope(pre.color, next.color);
-// 	if (extent.x > extent.y)
-// 	{
-// 		color_delta = (double)ft_abs(next.color - pre.color) \
-// 					/ (double)extent.x;
-// 		while (now.x++ != next.x)
-// 			now_color += color_delta * color_slope;
-// 	}
-// 	else
-// 	{
-// 		color_delta = (double)ft_abs(next.color - pre.color) \
-// 					/ (double)extent.y;
-// 		while (now.y++ != next.y)
-// 			now_color += color_delta * color_slope;
-// 	}
-// 	return ((int)now_color);
-// }
-
 static void	draw_bresenham(t_mappoint pre, t_mappoint next, t_map *map)
 {
 	t_mappoint	now;
